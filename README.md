@@ -1,5 +1,5 @@
 # odap-workshops
-Workships:
+Workshops:
 - Python
 - Databricks
 - Git
