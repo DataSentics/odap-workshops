@@ -6,11 +6,6 @@
 
 # COMMAND ----------
 
-# MAGIC %pip install pandas
-# MAGIC %pip install openpyxl
-
-# COMMAND ----------
-
 import pandas as pd
 
 # COMMAND ----------
@@ -208,3 +203,13 @@ df_iris.plot()
 
 # DBTITLE 1,Boxplot
 df_iris.plot.box()
+
+# COMMAND ----------
+
+df_iris["Name"].unique()
+
+# COMMAND ----------
+
+# DBTITLE 1,Scatter-plot
+colors = {'Iris-setosa':'red', 'Iris-versicolor':'green', 'Iris-virginica':'blue'}
+df_iris.plot.scatter('SepalLength', 'SepalWidth', c=df_iris['Name'].map(colors))
