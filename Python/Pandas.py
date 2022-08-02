@@ -90,5 +90,71 @@ passengers
 # select files where is condition True
 # allowed operations (>, <, ==, >=, <=, !=, .isin([]), .notna()...), logical operations (|, &)
 # SQL: SELECT * FROM df_titanic WHERE Age > 35 AND Sex == "female"
-filtered_passengers = passengers[(passengers["Age"] > 35) & (passengers["Sex"] == "female")]
+filtered_passengers = df_titanic[(df_titanic["Age"] > 35) & (df_titanic["Sex"] == "female")]
 filtered_passengers
+
+# COMMAND ----------
+
+# DBTITLE 1,Remove NaN values and IN
+# SQL: SELECT * FROM df_titanic WHERE Cabin IS NOT NULL Embarked IN (C, S)
+df_titanic[(df_titanic["Cabin"].notna()) & (df_titanic["Embarked"].isin(["C", "S"]))]
+
+# COMMAND ----------
+
+# DBTITLE 1,Access specific rows and columns by condition
+adult_women = df_titanic.loc[df_titanic["Age"] > 18, ["Name", "Age"]]
+adult_women
+
+# COMMAND ----------
+
+# DBTITLE 1,Access specific cells by index
+df_titanic.iloc[0:25, 0:4]
+
+# COMMAND ----------
+
+# DBTITLE 1,Add new column
+df_titanic["Adult"] = df_titanic["Age"] > 18
+df_titanic.head(30)
+
+# COMMAND ----------
+
+# DBTITLE 1,Rename columns
+df_renamed = df_titanic.rename(columns={"Parch": "Parents", "SibSp": "Siblings"})
+df_renamed
+
+# COMMAND ----------
+
+# DBTITLE 1,Combine data from multiple tables
+pd.concat([air_quality_pm25, air_quality_no2], keys=["PM25", "NO2"])
+
+# COMMAND ----------
+
+# DBTITLE 1,Join tables on common attribute
+pd.merge(air_quality, stations_coord, how="left", on="location")
+
+# COMMAND ----------
+
+# DBTITLE 1,Aggregating statistics
+titanic["Age"].mean()
+
+# COMMAND ----------
+
+titanic[["Age", "Fare"]].median()
+
+# COMMAND ----------
+
+titanic[["Age", "Fare"]].describe()
+
+# COMMAND ----------
+
+titanic.agg(
+    {
+        "Age": ["min", "max", "median", "skew"],
+        "Fare": ["min", "max", "median", "mean"],
+    }
+)
+
+# COMMAND ----------
+
+# DBTITLE 1,Group by
+
