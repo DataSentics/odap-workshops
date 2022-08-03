@@ -1,8 +1,8 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC # Pandas
-# MAGIC 
-# MAGIC Library for working with tabular data and perform all parts of the analysis from collection and manipulation through aggregation and visualization.
+# MAGIC * [Documentation](https://pandas.pydata.org/docs/)
+# MAGIC * Library for working with tabular data and perform all parts of the analysis from collection and manipulation through aggregation and visualization.
 
 # COMMAND ----------
 
@@ -11,14 +11,13 @@ import pandas as pd
 # COMMAND ----------
 
 source_tips = "./data/tips.csv"
-source_titanic = "./data/titanic.csv"
 source_iris = "./data/iris.csv"
 source_air_quality_no2 = "./data/air_quality_pm25_long.csv"
 source_air_quality_pm25 = "./data/air_quality_no2_long.csv"
 
-df_iris = pd.read_csv(source_iris)
-air_quality_pm25 = pd.read_csv(source_air_quality_pm25)
-air_quality_no2 = pd.read_csv(source_air_quality_no2)
+df_iris = pd.read_csv(source_iris, index=False)
+air_quality_pm25 = pd.read_csv(source_air_quality_pm25, index=False)
+air_quality_no2 = pd.read_csv(source_air_quality_no2, index=False)
 
 # COMMAND ----------
 
@@ -197,12 +196,12 @@ df_iris
 # COMMAND ----------
 
 # DBTITLE 1,Basic plot
-df_iris.plot()
+df_iris.plot(figsize=(10,6))
 
 # COMMAND ----------
 
 # DBTITLE 1,Boxplot
-df_iris.plot.box()
+df_iris.plot.box(figsize=(10,6))
 
 # COMMAND ----------
 
@@ -212,4 +211,4 @@ df_iris["Name"].unique()
 
 # DBTITLE 1,Scatter-plot
 colors = {'Iris-setosa':'red', 'Iris-versicolor':'green', 'Iris-virginica':'blue'}
-df_iris.plot.scatter('SepalLength', 'SepalWidth', c=df_iris['Name'].map(colors))
+df_iris.plot.scatter('SepalLength', 'SepalWidth', c=df_iris['Name'].map(colors), figsize=(10,6))
