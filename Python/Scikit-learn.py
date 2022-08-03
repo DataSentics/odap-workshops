@@ -1,6 +1,7 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC # Scikit-learn
+# MAGIC * [Documentation](https://scikit-learn.org/stable/)
 
 # COMMAND ----------
 
