@@ -13,6 +13,13 @@ from sklearn.metrics import plot_confusion_matrix
 from sklearn.ensemble import RandomForestClassifier
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import mean_squared_error
+from sklearn.linear_model import LinearRegression
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## 1. Iris classification
 
 # COMMAND ----------
 
@@ -22,9 +29,9 @@ df_iris
 # COMMAND ----------
 
 # DBTITLE 1,Convert target variable to numbers
-le = preprocessing.LabelEncoder()
-le.fit(df_iris['Name'])
-df_iris['Name']=le.transform(df_iris['Name'])
+label_encoder = preprocessing.LabelEncoder()
+label_encoder.fit(df_iris['Name'])
+df_iris['Name']=label_encoder.transform(df_iris['Name'])
 df_iris
 
 # COMMAND ----------
@@ -36,19 +43,20 @@ df_iris_data = df_iris.drop(columns=["Name"])
 # COMMAND ----------
 
 # DBTITLE 1,Split dataset to train and test data
+
 # test_size = fraction of data which is used for testing
 x_train,x_test,y_train,y_test = train_test_split(df_iris_data, df_iris_label, test_size=0.3, random_state=123)
 
 # COMMAND ----------
 
 # DBTITLE 1,Train RandomForesTree
-forest = RandomForestClassifier(random_state=0)
-forest.fit(x_train, y_train)
+clf_forest = RandomForestClassifier(random_state=0)
+clf_forest.fit(x_train, y_train)
 
 # COMMAND ----------
 
 # DBTITLE 1,Prediction on test data
-predicted = clf.predict(x_test)
+predicted = clf_forest.predict(x_test)
 predicted
 
 # COMMAND ----------
@@ -59,12 +67,52 @@ accuracy_score(y_test, predicted, normalize=True)
 # COMMAND ----------
 
 # DBTITLE 1,Visualize confusion matrix
-plot_confusion_matrix(forest, x_test, y_test)
+plot_confusion_matrix(clf_forest, x_test, y_test)
 plt.show()
 
 # COMMAND ----------
 
 # DBTITLE 1,Visualize feature importance
-importances = forest.feature_importances_
-forest_importances = pd.Series(importances, index=df_iris_data.columns)
-forest_importances.plot.bar()
+importances = clf_forest.feature_importances_
+feature_importances = pd.Series(importances, index=df_iris_data.columns)
+feature_importances.plot.bar()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## 2. Tips regression
+
+# COMMAND ----------
+
+df_tips = pd.read_csv("./data/tips.csv")
+df_tips
+
+# COMMAND ----------
+
+df_tip_target = df_tips["tip"]
+df_tip_features = df_tips.drop(columns=["tip"])
+
+# COMMAND ----------
+
+x_train,x_test,y_train,y_test = train_test_split(df_tip_features, df_tip_target, test_size=0.2, random_state=123)
+
+# COMMAND ----------
+
+X = pd.get_dummies(data=x_train, drop_first=False)
+reg = LinearRegression().fit(X, y_train)
+reg.score(X, y_train)
+
+# COMMAND ----------
+
+predicted = reg.predict(pd.get_dummies(data=x_test, drop_first=False))
+
+# COMMAND ----------
+
+df = pd.DataFrame({'test': y_test, 'predicted': predicted})
+df = df.reset_index()
+df = df.drop(columns=["index"])
+df.plot(figsize=([12, 8]))
+
+# COMMAND ----------
+
+mean_squared_error(y_test, predicted)
