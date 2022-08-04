@@ -1,4 +1,4 @@
-city,country,date.utc,location,parameter,value,unit
+city,country,date_utc,location,parameter,value,unit
 Paris,FR,2019-06-21 00:00:00+00:00,FR04014,no2,20.0,µg/m³
 Paris,FR,2019-06-20 23:00:00+00:00,FR04014,no2,21.8,µg/m³
 Paris,FR,2019-06-20 22:00:00+00:00,FR04014,no2,26.5,µg/m³
