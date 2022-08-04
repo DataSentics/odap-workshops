@@ -114,29 +114,17 @@ df_droped_na[df_droped_na["Survived"] == 0]["Savings"].mean()
 
 # COMMAND ----------
 
-# importing libraries
-import time
-import math
- 
-# decorator to calculate duration
-# taken by any function.
-def calculate_time(func):
-     
-    # added arguments inside the inner1,
-    # if function takes any arguments,
-    # can be added like this.
-    def inner1(*args, **kwargs):
- 
-        # storing time before function execution
-        begin = time.time()
-         
-        func(*args, **kwargs)
- 
-        # storing time after function execution
-        end = time.time()
-        print("Total time taken in : ", func.__name__, end - begin)
- 
-    return inner1
+def log(func):
+    def inner(*args, **kwargs):
+        print("Accessed the function '{}' with arguments {}".format(func.__name__, args, kwargs))
+        return func(*args, **kwargs)
+    return inner
+
+@log
+def func(x):
+    return 2 * x
+
+print(func(5))
 
 # COMMAND ----------
 
@@ -190,24 +178,3 @@ plt.show()
 importances = clf_forest.feature_importances_
 feature_importances = pd.Series(importances, index=df_titanic_features.columns)
 feature_importances.sort_values(ascending = False).head(10).plot.bar(figsize=[10,8])
-
-# COMMAND ----------
-
-
-
-
-def my_func(x):
-    return x*2
-
-
-
-
-# COMMAND ----------
-
-for i in range(5):
-    print(i)
- 
-
-
-
-

@@ -8,6 +8,14 @@
 
 # Here you can add imports
 import pandas as pd
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn import preprocessing
+from sklearn.metrics import plot_confusion_matrix
+from sklearn.ensemble import RandomForestClassifier
+import matplotlib.pyplot as plt
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import mean_squared_error
 
 # COMMAND ----------
 
@@ -45,7 +53,17 @@ source_titanic_income = "./data/titanic_income_savings.csv"
 
 # MAGIC %md
 # MAGIC ## Task 4
-# MAGIC * create decorate function for time measuring
+# MAGIC * define simple function with some parameters which will by decorated by log
+
+# COMMAND ----------
+
+def log(func):
+    def inner(*args, **kwargs):
+        print("Accessed the function '{}' with arguments {}".format(func.__name__, args, kwargs))
+        return func(*args, **kwargs)
+    return inner
+
+
 
 # COMMAND ----------
 
@@ -56,3 +74,25 @@ source_titanic_income = "./data/titanic_income_savings.csv"
 # MAGIC * Find model accurancy
 # MAGIC * Visualize confusion matrix
 # MAGIC * Visualize feature importance
+
+# COMMAND ----------
+
+# First we need to drop null values because..
+df_titanic = df_titanic.dropna()
+# Then we need to encode the labels because ...
+df_titanic_label = df_titanic["Survived"]
+label_encoder = preprocessing.LabelEncoder()
+label_encoder.fit(df_titanic['Survived'])
+df_titanic['Survived']=label_encoder.transform(df_titanic['Survived'])
+# Than we need to drop .... because 
+df_titanic_features = df_titanic.drop(columns=["PassengerId", "Name", "Cabin", "Survived", "Ticket"])
+df_titanic_features = pd.get_dummies(data=df_titanic_features, drop_first=False)
+
+# TODO Perform the train test split on df_titanc_features and df_titanc_label
+x_train,x_test,y_train,y_test = 
+# TODO Create RandomForestClassifier from the imported module RandomForestClassifier. It is already imported for you
+clf_forest = 
+# TODO Fit the  RandomForestClassifier
+
+# TODO Make a prediction on RandomForestClassifier
+

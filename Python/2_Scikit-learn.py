@@ -29,6 +29,7 @@ df_iris
 # COMMAND ----------
 
 # DBTITLE 1,Convert target variable to numbers
+# Encode target variable to numerical values
 label_encoder = preprocessing.LabelEncoder()
 label_encoder.fit(df_iris['Name'])
 df_iris['Name']=label_encoder.transform(df_iris['Name'])
@@ -37,42 +38,47 @@ df_iris
 # COMMAND ----------
 
 # DBTITLE 1,Remove target variable from training data
+# Separate target variable features
 df_iris_label = df_iris["Name"]
 df_iris_data = df_iris.drop(columns=["Name"])
 
 # COMMAND ----------
 
 # DBTITLE 1,Split dataset to train and test data
-
 # test_size = fraction of data which is used for testing
 x_train,x_test,y_train,y_test = train_test_split(df_iris_data, df_iris_label, test_size=0.3, random_state=123)
 
 # COMMAND ----------
 
 # DBTITLE 1,Train RandomForesTree
+# Create and train model
 clf_forest = RandomForestClassifier(random_state=0)
 clf_forest.fit(x_train, y_train)
 
 # COMMAND ----------
 
 # DBTITLE 1,Prediction on test data
+# Try predict test data
 predicted = clf_forest.predict(x_test)
 predicted
 
 # COMMAND ----------
 
 # DBTITLE 1,Model accurancy
+# Measure model accurancy
 accuracy_score(y_test, predicted, normalize=True)
 
 # COMMAND ----------
 
 # DBTITLE 1,Visualize confusion matrix
+# Visualize true positives and negative positives
 plot_confusion_matrix(clf_forest, x_test, y_test)
 plt.show()
 
 # COMMAND ----------
 
 # DBTITLE 1,Visualize feature importance
+# Visualize feature importance
 importances = clf_forest.feature_importances_
 feature_importances = pd.Series(importances, index=df_iris_data.columns)
 feature_importances.plot.bar()
