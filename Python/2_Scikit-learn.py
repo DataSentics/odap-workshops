@@ -2,6 +2,7 @@
 # MAGIC %md
 # MAGIC # Scikit-learn
 # MAGIC * [Documentation](https://scikit-learn.org/stable/)
+# MAGIC Scikit-learn (Sklearn) is the most useful and robust library for machine learning in Python. It provides a selection of efficient tools for machine learning and statistical modeling including classification, regression, clustering and dimensionality reduction via a consistence interface in Python.
 
 # COMMAND ----------
 
@@ -104,16 +105,20 @@ x_train,x_test,y_train,y_test = train_test_split(df_tip_features, df_tip_target,
 
 # COMMAND ----------
 
+# convert categorical variables into indicator variables (booleans)
 X = pd.get_dummies(data=x_train, drop_first=False)
+# fit linear regression model
 reg = LinearRegression().fit(X, y_train)
 reg.score(X, y_train)
 
 # COMMAND ----------
 
+# try to predict test data
 predicted = reg.predict(pd.get_dummies(data=x_test, drop_first=False))
 
 # COMMAND ----------
 
+# visualize differences between predicted and real target variable
 df = pd.DataFrame({'test': y_test, 'predicted': predicted})
 df = df.reset_index()
 df = df.drop(columns=["index"])

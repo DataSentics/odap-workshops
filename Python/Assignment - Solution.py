@@ -128,11 +128,6 @@ print(func(5))
 
 # COMMAND ----------
 
-@calculate_time
-
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ## Task 5
 # MAGIC * From the first dataset remove features (PassengerId, Name, Cabin, Ticket)

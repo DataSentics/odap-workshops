@@ -3,6 +3,8 @@
 # MAGIC # Pandas
 # MAGIC * [Documentation](https://pandas.pydata.org/docs/)
 # MAGIC * Library for working with tabular data and perform all parts of the analysis from collection and manipulation through aggregation and visualization.
+# MAGIC * The name is derived from "panel data", term from the econometrics
+# MAGIC * It can be used with other common Python packages, such as NumPy, matplotlib and scikit-learn
 
 # COMMAND ----------
 
@@ -21,15 +23,17 @@ source_air_quality_no2 = "file:/dbfs/FileStore/python-workshop/air_quality_pm25_
 source_air_quality_pm25 = "file:/dbfs/FileStore/python-workshop/air_quality_no2_long.csv"
 
 df_iris = pd.read_csv(source_iris)
-air_quality_pm25 = pd.read_csv(source_air_quality_pm25)
-air_quality_no2 = pd.read_csv(source_air_quality_no2)
+df_air_quality_pm25 = pd.read_csv(source_air_quality_pm25)
+df_air_quality_no2 = pd.read_csv(source_air_quality_no2)
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ## DataFrame
-# MAGIC - data in table representation
+# MAGIC - Data in table representation
 # MAGIC - Pandas supports many formats (csv, excel, sql, json, parquet,…)
+# MAGIC - A Series is essentially a column
+# MAGIC - DataFrame is a multi-dimensional table made up of a collection of Series
 
 # COMMAND ----------
 
@@ -46,7 +50,8 @@ df_tips
 
 # DBTITLE 1,SQL
 # MAGIC %sql
-# MAGIC SELECT * FROM tips_table LIMIT 5
+# MAGIC SELECT *
+# MAGIC FROM tips_table LIMIT 5;
 
 # COMMAND ----------
 
@@ -72,7 +77,8 @@ df_tips.dtypes
 
 # DBTITLE 1,SQL
 # MAGIC %sql
-# MAGIC SELECT COUNT(*) FROM tips_table
+# MAGIC SELECT COUNT(*) 
+# MAGIC FROM tips_table;
 
 # COMMAND ----------
 
@@ -101,7 +107,8 @@ df_tips.shape
 
 # DBTITLE 1,SQL
 # MAGIC %sql
-# MAGIC SELECT total_bill FROM tips_table
+# MAGIC SELECT total_bill 
+# MAGIC FROM tips_table;
 
 # COMMAND ----------
 
@@ -118,7 +125,8 @@ total
 
 # DBTITLE 1,SQL
 # MAGIC %sql
-# MAGIC SELECT tip, day, time FROM tips_table
+# MAGIC SELECT tip, day, time 
+# MAGIC FROM tips_table;
 
 # COMMAND ----------
 
@@ -136,7 +144,9 @@ tips_daytime
 
 # DBTITLE 1,SQL
 # MAGIC %sql
-# MAGIC SELECT * FROM tips_table WHERE tip > 3 AND time == "Lunch"
+# MAGIC SELECT * 
+# MAGIC FROM tips_table 
+# MAGIC WHERE tip > 3 AND time == "Lunch";
 
 # COMMAND ----------
 
@@ -155,7 +165,9 @@ filtered_tips
 
 # DBTITLE 1,SQL
 # MAGIC %sql
-# MAGIC SELECT * FROM tips_table WHERE total_bill IS NOT NULL AND day IN ("Sun", "Sat")
+# MAGIC SELECT * 
+# MAGIC FROM tips_table 
+# MAGIC WHERE total_bill IS NOT NULL AND day IN ("Sun", "Sat");
 
 # COMMAND ----------
 
@@ -189,13 +201,15 @@ df.dropna()
 
 # DBTITLE 1,SQL
 # MAGIC %sql
-# MAGIC SELECT day, time, size FROM tips_table WHERE size > 2
+# MAGIC SELECT day, time, size 
+# MAGIC FROM tips_table 
+# MAGIC WHERE size > 2;
 
 # COMMAND ----------
 
 # DBTITLE 1,Pandas
-families = df_tips.loc[df_tips["size"] > 2, ["day", "time", "size"]]
-families
+df_families = df_tips.loc[df_tips["size"] > 2, ["day", "time", "size"]]
+df_families
 
 # COMMAND ----------
 
@@ -238,6 +252,24 @@ df_renamed
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ### Join two tables
+
+# COMMAND ----------
+
+# DBTITLE 1,SQL
+# MAGIC %sql
+# MAGIC SELECT * 
+# MAGIC FROM air_quality_pm25_table LEFT JOIN air_quality_no2_table 
+# MAGIC ON air_quality_pm25_table.date_utc=air_quality_no2_table.date_utc AND air_quality_pm25_table.location=air_quality_no2_table.location;
+
+# COMMAND ----------
+
+# DBTITLE 1,Pandas
+pd.merge(df_air_quality_no2, df_air_quality_pm25, how="left", on=["location", "date_utc"])
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ### Combine data from multiple tables
 
 # COMMAND ----------
@@ -247,37 +279,17 @@ df_renamed
 # MAGIC SELECT 
 # MAGIC         *
 # MAGIC     FROM
-# MAGIC        air_quality_pm25
+# MAGIC        air_quality_pm25_table
 # MAGIC UNION
 # MAGIC     SELECT
 # MAGIC         *
 # MAGIC     FROM
-# MAGIC         air_quality_no2
+# MAGIC         air_quality_no2_table
 
 # COMMAND ----------
 
 # DBTITLE 1,Pandas
-pd.concat([air_quality_pm25, air_quality_no2])
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Join two tables
-
-# COMMAND ----------
-
-# DBTITLE 1,SQL
-# MAGIC %sql
-# MAGIC SELECT * FROM air_quality_pm25 RIGHT JOIN air_quality_no2 ON "air_quality_pm25.date.utc"="air_quality_no2.date_utc" AND air_quality_pm25.location=spark_catalog.username.air_quality_no2.location
-
-# COMMAND ----------
-
-# DBTITLE 1,Pandas
-no2 = air_quality_no2[["date.utc", "location", "value", "unit"]].rename(
-  columns={"value": "no2", "unit": "unit_no2"}
-)
-pm25 = air_quality_pm25.rename(columns={"value": "pm25", "unit": "unit_pm25"})
-pd.merge(pm25, no2, how="left", on=["location", "date.utc"])
+pd.concat([df_air_quality_pm25, df_air_quality_no2])
 
 # COMMAND ----------
 
@@ -288,7 +300,8 @@ pd.merge(pm25, no2, how="left", on=["location", "date.utc"])
 
 # DBTITLE 1,SQL
 # MAGIC %sql
-# MAGIC SELECT MEAN(tip) FROM tips_table
+# MAGIC SELECT MEAN(tip) 
+# MAGIC FROM tips_table;
 
 # COMMAND ----------
 
@@ -299,7 +312,8 @@ df_tips["tip"].mean()
 
 # DBTITLE 1,SQL
 # MAGIC %sql
-# MAGIC SELECT MEAN(size), MEAN(tip) FROM tips_table
+# MAGIC SELECT MEAN(size), MEAN(tip) 
+# MAGIC FROM tips_table;
 
 # COMMAND ----------
 
@@ -353,11 +367,6 @@ df_tips.groupby(["day", "time"]).mean()
 
 # DBTITLE 1,Pandas
 df_tips["day"].value_counts()
-
-# COMMAND ----------
-
-# DBTITLE 1,Pandas
-df_iris
 
 # COMMAND ----------
 

@@ -32,6 +32,10 @@ source_titanic_income = "./data/titanic_income_savings.csv"
 
 # COMMAND ----------
 
+# TODO write your solution here 1
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ## Task 2
 # MAGIC * For the first dataset (titanic) answer questions below:
@@ -39,6 +43,22 @@ source_titanic_income = "./data/titanic_income_savings.csv"
 # MAGIC   2) Of the people we have data for, how many of them survived and how many did not? (Visualize the result as barchart.)
 # MAGIC   3) What is the overall survival rate?
 # MAGIC   4) How many passengers on the Titanic were males and how many were females in each ticket class?
+
+# COMMAND ----------
+
+# TODO write your solution here for 2.1
+
+# COMMAND ----------
+
+# TODO write your solution here for 2.2
+
+# COMMAND ----------
+
+# TODO write your solution here for 2.3
+
+# COMMAND ----------
+
+# TODO write your solution here for 2.4
 
 # COMMAND ----------
 
@@ -51,19 +71,34 @@ source_titanic_income = "./data/titanic_income_savings.csv"
 
 # COMMAND ----------
 
+# TODO write your solution here for 3.1
+
+# COMMAND ----------
+
+# TODO write your solution here for 3.2
+
+# COMMAND ----------
+
+# TODO write your solution here for 3.3
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ## Task 4
 # MAGIC * define simple function with some parameters which will by decorated by log
 
 # COMMAND ----------
 
+# This is already made decorator for you, you just need to use it on your function
 def log(func):
     def inner(*args, **kwargs):
         print("Accessed the function '{}' with arguments {}".format(func.__name__, args, kwargs))
         return func(*args, **kwargs)
     return inner
 
+# TODO here define and decorate your function it can be a really simple function with a parameter. Just returning the parameter is enough. 
 
+# TODO call your decorated function
 
 # COMMAND ----------
 
@@ -77,14 +112,15 @@ def log(func):
 
 # COMMAND ----------
 
-# First we need to drop null values because..
+# First we need to drop or replace null values.
 df_titanic = df_titanic.dropna()
-# Then we need to encode the labels because ...
+# Then we need to encode the labels because it is in string and it have to be numerical.
 df_titanic_label = df_titanic["Survived"]
 label_encoder = preprocessing.LabelEncoder()
 label_encoder.fit(df_titanic['Survived'])
 df_titanic['Survived']=label_encoder.transform(df_titanic['Survived'])
-# Than we need to drop .... because 
+# Than we need to drop "PassengerId", "Name", "Cabin", "Ticket" because it is unique for every passenger
+# and "Survived" because it is target variable.
 df_titanic_features = df_titanic.drop(columns=["PassengerId", "Name", "Cabin", "Survived", "Ticket"])
 df_titanic_features = pd.get_dummies(data=df_titanic_features, drop_first=False)
 
