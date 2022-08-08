@@ -3,6 +3,13 @@
 # MAGIC # Pandas
 # MAGIC * [Documentation](https://pandas.pydata.org/docs/)
 # MAGIC * Library for working with tabular data and perform all parts of the analysis from collection and manipulation through aggregation and visualization.
+# MAGIC * The name is derived from "panel data", term from the econometrics
+# MAGIC * It can be used with other common Python packages, such as NumPy, matplotlib and scikit-learn
+
+# COMMAND ----------
+
+# DBTITLE 1,Create SQL tables
+# MAGIC %run ./Setup-SQL
 
 # COMMAND ----------
 
@@ -10,60 +17,81 @@ import pandas as pd
 
 # COMMAND ----------
 
-source_tips = "./data/tips.csv"
-source_iris = "./data/iris.csv"
-source_air_quality_no2 = "./data/air_quality_pm25_long.csv"
-source_air_quality_pm25 = "./data/air_quality_no2_long.csv"
+source_tips = "file:/dbfs/FileStore/python-workshop/tips.csv"
+source_iris = "file:/dbfs/FileStore/python-workshop/iris.csv"
+source_air_quality_no2 = "file:/dbfs/FileStore/python-workshop/air_quality_pm25_long.csv"
+source_air_quality_pm25 = "file:/dbfs/FileStore/python-workshop/air_quality_no2_long.csv"
 
-df_iris = pd.read_csv(source_iris, index=False)
-air_quality_pm25 = pd.read_csv(source_air_quality_pm25, index=False)
-air_quality_no2 = pd.read_csv(source_air_quality_no2, index=False)
+df_iris = pd.read_csv(source_iris)
+df_air_quality_pm25 = pd.read_csv(source_air_quality_pm25)
+df_air_quality_no2 = pd.read_csv(source_air_quality_no2)
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ## DataFrame
-# MAGIC - data in table representation
+# MAGIC - Data in table representation
 # MAGIC - Pandas supports many formats (csv, excel, sql, json, parquet,…)
+# MAGIC - A Series is essentially a column
+# MAGIC - DataFrame is a multi-dimensional table made up of a collection of Series
 
 # COMMAND ----------
 
 # DBTITLE 1,Read CSV to DataFrame
-df_tips = pd.read_csv("./data/tips.csv")
+df_tips = pd.read_csv("file:/dbfs/FileStore/python-workshop/tips.csv")
 df_tips
 
 # COMMAND ----------
 
-# DBTITLE 1,Display first N rows
+# MAGIC %md
+# MAGIC ### Display first N rows
+
+# COMMAND ----------
+
+# DBTITLE 1,SQL
+# MAGIC %sql
+# MAGIC SELECT *
+# MAGIC FROM tips_table LIMIT 5;
+
+# COMMAND ----------
+
+# DBTITLE 1,Pandas
 df_tips.head(5)
 
 # COMMAND ----------
 
-# DBTITLE 1,Display schema
+# MAGIC %md
+# MAGIC ### Display schema
+
+# COMMAND ----------
+
+# DBTITLE 1,Pandas
 df_tips.dtypes
 
 # COMMAND ----------
 
-# DBTITLE 1,Display size
+# MAGIC %md
+# MAGIC ### Display size
+
+# COMMAND ----------
+
+# DBTITLE 1,SQL
+# MAGIC %sql
+# MAGIC SELECT COUNT(*) 
+# MAGIC FROM tips_table;
+
+# COMMAND ----------
+
+# DBTITLE 1,Pandas
 # how to find table size (nrows, ncolumns)
 df_tips.shape
 
 # COMMAND ----------
 
 # DBTITLE 1,Write CSV file from DataFrame
-df_tips.to_csv("./data/tips_new.csv")
-df_from_csv = pd.read_csv("./data/tips_new.csv")
-df_from_csv
-
-# COMMAND ----------
-
-# DBTITLE 1,Task 1
-# MAGIC %md
-# MAGIC 1. read file from "source_file" as pandas DataFrame
-# MAGIC 2. display first 10 rows of the DataFrame
-# MAGIC 3. display schema of the DataFrame
-# MAGIC 4. find number of rows and columns
-# MAGIC 4. write the DataFrame to new csv file "/dbfs/FileStore/user/ondrej.lostak@datasentics.cz/TitanicData.csv"
+# df_tips.to_csv(f"file:/dbfs/FileStore/python-workshop/{}tips_new.csv")
+# df_from_csv = pd.read_csv(f"file:/dbfs/FileStore/python-workshop/tips_new.csv")
+# df_from_csv
 
 # COMMAND ----------
 
@@ -72,143 +100,296 @@ df_from_csv
 
 # COMMAND ----------
 
-# DBTITLE 1,Get one column
-# get one column
+# MAGIC %md
+# MAGIC ### Get one column
+
+# COMMAND ----------
+
+# DBTITLE 1,SQL
+# MAGIC %sql
+# MAGIC SELECT total_bill 
+# MAGIC FROM tips_table;
+
+# COMMAND ----------
+
+# DBTITLE 1,Pandas
 total = df_tips["total_bill"]
 total
 
 # COMMAND ----------
 
-# DBTITLE 1,Get subset of columns
+# MAGIC %md
+# MAGIC ### Get subset of columns
+
+# COMMAND ----------
+
+# DBTITLE 1,SQL
+# MAGIC %sql
+# MAGIC SELECT tip, day, time 
+# MAGIC FROM tips_table;
+
+# COMMAND ----------
+
+# DBTITLE 1,Pandas
 # get new DataFrame with subset of columns
-# SQL: SELECT tip, day, time FROM df_tips 
 tips_daytime = df_tips[["tip", "day", "time"]]
 tips_daytime
 
 # COMMAND ----------
 
-# DBTITLE 1,Filter rows
+# MAGIC %md
+# MAGIC ### Filter rows
+
+# COMMAND ----------
+
+# DBTITLE 1,SQL
+# MAGIC %sql
+# MAGIC SELECT * 
+# MAGIC FROM tips_table 
+# MAGIC WHERE tip > 3 AND time == "Lunch";
+
+# COMMAND ----------
+
+# DBTITLE 1,Pandas
 # select files where is condition True
-# allowed operations (>, <, ==, >=, <=, !=, .isin([]), .notna()...), logical operations (|, &)
-# SQL: SELECT * FROM df_tips WHERE tip > 3 AND time == "Lunch"
+# allowed operations (>, <, ==, >=, <=, !=, .isin([]), .notna()...), logical operators (|, &)
 filtered_tips = df_tips[(df_tips["tip"] > 3) & (df_tips["time"] == "Lunch")]
 filtered_tips
 
 # COMMAND ----------
 
-# DBTITLE 1,Filter NaN values and IN
-# SQL: SELECT * FROM df_titanic WHERE Cabin IS NOT NULL Embarked IN (C, S)
+# MAGIC %md
+# MAGIC ### Filter NaN values and IN
+
+# COMMAND ----------
+
+# DBTITLE 1,SQL
+# MAGIC %sql
+# MAGIC SELECT * 
+# MAGIC FROM tips_table 
+# MAGIC WHERE total_bill IS NOT NULL AND day IN ("Sun", "Sat");
+
+# COMMAND ----------
+
+# DBTITLE 1,Pandas
 df_tips[(df_tips["total_bill"].notna()) & (df_tips["day"].isin(["Sun", "Sat"]))]
 
 # COMMAND ----------
 
-# DBTITLE 1,Drop NaN
+# DBTITLE 0,Pandas Drop NaN
+# add NaN value
 df = pd.read_csv(source_tips)
-df.iloc[0,0] = None
+df.iloc[0, 0] = None
 
 # COMMAND ----------
 
-# DBTITLE 1,Check null values
+# DBTITLE 0,Check null values
+# check NaN values
 df.isnull().any()
 
 # COMMAND ----------
 
+# drop NaN values
 df.dropna()
 
 # COMMAND ----------
 
-# DBTITLE 1,Access specific rows and columns by condition
-families = df_tips.loc[df_tips["size"] > 2, ["day", "time", "size"]]
-families
+# MAGIC %md
+# MAGIC ### Select specific rows and columns by condition
 
 # COMMAND ----------
 
-# DBTITLE 1,Access specific cells by index
+# DBTITLE 1,SQL
+# MAGIC %sql
+# MAGIC SELECT day, time, size 
+# MAGIC FROM tips_table 
+# MAGIC WHERE size > 2;
+
+# COMMAND ----------
+
+# DBTITLE 1,Pandas
+df_families = df_tips.loc[df_tips["size"] > 2, ["day", "time", "size"]]
+df_families
+
+# COMMAND ----------
+
+# DBTITLE 1,Pandas
+# Access specific rows and columns by index
 df_tips.iloc[0:25, 0:4]
 
 # COMMAND ----------
 
-# DBTITLE 1,Add new column
+# MAGIC %md
+# MAGIC ### Add new column
+
+# COMMAND ----------
+
+# DBTITLE 1,SQL
+# MAGIC %sql
+# MAGIC SELECT total_bill, tip, sex, smoker, day, time, size, CASE
+# MAGIC       WHEN size > 2 THEN true
+# MAGIC       ELSE false
+# MAGIC    END AS family
+# MAGIC    FROM tips_table
+
+# COMMAND ----------
+
+# DBTITLE 1,Pandas
 df_tips["family"] = df_tips["size"] > 2
 df_tips.head(30)
 
 # COMMAND ----------
 
-# DBTITLE 1,Rename columns
+# MAGIC %md
+# MAGIC ### Rename column
+
+# COMMAND ----------
+
+# DBTITLE 1,Pandas
 df_renamed = df_tips.rename(columns={"time": "meal_type"})
 df_renamed
 
 # COMMAND ----------
 
-# DBTITLE 1,Combine data from multiple tables
-pd.concat([air_quality_pm25, air_quality_no2])
+# MAGIC %md
+# MAGIC ### Join two tables
 
 # COMMAND ----------
 
-# DBTITLE 1,Join tables on common attribute
-no2 = air_quality_no2[["date.utc", "value", "unit"]].rename(columns={"value": "no2", "unit": "unit_no2"})
-pm25 = air_quality_pm25.rename(columns={"value": "pm25", "unit": "unit_pm25"})
-pd.merge(pm25, no2, how="left", on="date.utc")
+# DBTITLE 1,SQL
+# MAGIC %sql
+# MAGIC SELECT * 
+# MAGIC FROM air_quality_pm25_table LEFT JOIN air_quality_no2_table 
+# MAGIC ON air_quality_pm25_table.date_utc=air_quality_no2_table.date_utc AND air_quality_pm25_table.location=air_quality_no2_table.location;
 
 # COMMAND ----------
 
-# DBTITLE 1,Aggregating statistics
+# DBTITLE 1,Pandas
+pd.merge(df_air_quality_no2, df_air_quality_pm25, how="left", on=["location", "date_utc"])
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Combine data from multiple tables
+
+# COMMAND ----------
+
+# DBTITLE 1,SQL
+# MAGIC %sql
+# MAGIC SELECT 
+# MAGIC         *
+# MAGIC     FROM
+# MAGIC        air_quality_pm25_table
+# MAGIC UNION
+# MAGIC     SELECT
+# MAGIC         *
+# MAGIC     FROM
+# MAGIC         air_quality_no2_table
+
+# COMMAND ----------
+
+# DBTITLE 1,Pandas
+pd.concat([df_air_quality_pm25, df_air_quality_no2])
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Aggregating statistics
+
+# COMMAND ----------
+
+# DBTITLE 1,SQL
+# MAGIC %sql
+# MAGIC SELECT MEAN(tip) 
+# MAGIC FROM tips_table;
+
+# COMMAND ----------
+
+# DBTITLE 1,Pandas
 df_tips["tip"].mean()
 
 # COMMAND ----------
 
-df_tips[["size", "tip"]].median()
+# DBTITLE 1,SQL
+# MAGIC %sql
+# MAGIC SELECT MEAN(size), MEAN(tip) 
+# MAGIC FROM tips_table;
 
 # COMMAND ----------
 
+# DBTITLE 1,Pandas
+df_tips[["size", "tip"]].mean()
+
+# COMMAND ----------
+
+# DBTITLE 1,Pandas
 df_tips[["size", "tip"]].describe()
 
 # COMMAND ----------
 
+# DBTITLE 1,Pandas
 df_tips.agg(
-    {
-        "size": ["min", "max", "median"],
-        "tip": ["min", "max", "median", "mean"],
-    }
+  {
+    "size": ["min", "max", "median"],
+    "tip": ["min", "max", "median", "mean"],
+  }
 )
 
 # COMMAND ----------
 
-# DBTITLE 1,Group by
+# MAGIC %md
+# MAGIC ### Group by
+
+# COMMAND ----------
+
+# DBTITLE 1,SQL
+# MAGIC %sql
+# MAGIC SELECT time, MEAN(tip)
+# MAGIC FROM tips_table
+# MAGIC GROUP BY time
+
+# COMMAND ----------
+
+# DBTITLE 1,Pandas
 df_tips[["time", "tip"]].groupby("time").mean()
 
 # COMMAND ----------
 
+# DBTITLE 1,Pandas
 df_tips.groupby("time").mean()
 
 # COMMAND ----------
 
+# DBTITLE 1,Pandas
 df_tips.groupby(["day", "time"]).mean()
 
 # COMMAND ----------
 
+# DBTITLE 1,Pandas
 df_tips["day"].value_counts()
 
 # COMMAND ----------
 
-df_iris
+# MAGIC %md
+# MAGIC ### Basic visualizations
 
 # COMMAND ----------
 
-# DBTITLE 1,Basic plot
-df_iris.plot(figsize=(10,6))
+# DBTITLE 1,Pandas
+# Plot
+df_iris.plot(figsize=(10, 6))
 
 # COMMAND ----------
 
-# DBTITLE 1,Boxplot
-df_iris.plot.box(figsize=(10,6))
+# DBTITLE 1,Pandas
+# Box-plot
+df_iris.plot.box(figsize=(10, 6))
 
 # COMMAND ----------
 
-df_iris["Name"].unique()
-
-# COMMAND ----------
-
-# DBTITLE 1,Scatter-plot
-colors = {'Iris-setosa':'red', 'Iris-versicolor':'green', 'Iris-virginica':'blue'}
-df_iris.plot.scatter('SepalLength', 'SepalWidth', c=df_iris['Name'].map(colors), figsize=(10,6))
+# DBTITLE 1,Pandas
+# Scatter-plot
+colors = {"Iris-setosa": "red", "Iris-versicolor": "green", "Iris-virginica": "blue"}
+df_iris.plot.scatter(
+  "PetalLength", "PetalWidth", c=df_iris["Name"].map(colors), figsize=(10, 6)
+)
