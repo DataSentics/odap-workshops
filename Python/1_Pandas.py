@@ -88,13 +88,6 @@ df_tips.shape
 
 # COMMAND ----------
 
-# DBTITLE 1,Write CSV file from DataFrame
-# df_tips.to_csv(f"file:/dbfs/FileStore/python-workshop/{}tips_new.csv")
-# df_from_csv = pd.read_csv(f"file:/dbfs/FileStore/python-workshop/tips_new.csv")
-# df_from_csv
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ## Subsets
 

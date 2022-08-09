@@ -21,8 +21,8 @@ from sklearn.metrics import mean_squared_error
 
 # DBTITLE 1,Paths to datasets
 # run
-source_titanic = "./data/titanic.csv"
-source_titanic_income = "./data/titanic_income_savings.csv"
+source_titanic = "file:/dbfs/FileStore/python-workshop/titanic.csv"
+source_titanic_income = "file:/dbfs/FileStore/python-workshop/titanic_income_savings.csv"
 
 # COMMAND ----------
 

@@ -51,7 +51,7 @@ x_train,x_test,y_train,y_test = train_test_split(df_iris_data, df_iris_label, te
 
 # COMMAND ----------
 
-# DBTITLE 1,Train RandomForesTree
+# DBTITLE 1,Train RandomForest
 # Create and train model
 clf_forest = RandomForestClassifier(random_state=0)
 clf_forest.fit(x_train, y_train)

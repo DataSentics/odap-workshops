@@ -39,10 +39,6 @@ def calculate_time(func):
 # in this case to calculate a factorial
 @calculate_time
 def factorial(num):
- 
-    # sleep 2 seconds because it takes very less time
-    # so that you can see the actual difference
-    time.sleep(2)
     print(math.factorial(num))
  
 # calling the function.
