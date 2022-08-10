@@ -249,6 +249,8 @@ dbutils.widgets.dropdown("table", "iris_table", [database[0] for database in spa
 # MAGIC * ### Databricks File System (DBFS)
 # MAGIC A filesystem abstraction layer over a blob store. It contains directories, which can contain files (data files, libraries, and images), and other directories.
 # MAGIC 
+# MAGIC ![DBFS](https://github.com/DataSentics/odap-workshops/blob/main/DBX/images/data_file_system.png?raw=true)
+# MAGIC 
 # MAGIC * ### Database
 # MAGIC A collection of information that is organized so that it can be easily accessed, managed, and updated.
 # MAGIC 
@@ -257,6 +259,8 @@ dbutils.widgets.dropdown("table", "iris_table", [database[0] for database in spa
 # MAGIC 
 # MAGIC * ### Metastore
 # MAGIC The component that stores all the structure information of the various tables and partitions in the data warehouse including column and column type information, the serializers and deserializers necessary to read and write data, and the corresponding files where the data is stored.
+# MAGIC 
+# MAGIC ![Metastore](https://github.com/DataSentics/odap-workshops/blob/main/DBX/images/metastore.png?raw=true)
 # MAGIC 
 # MAGIC * ### Delta Table
 
@@ -327,12 +331,65 @@ dbutils.widgets.removeAll()
 # MAGIC ### Workflows with jobs:
 # MAGIC A non-interactive mechanism for running a notebook or library either immediately or on a scheduled basis.
 # MAGIC 
+# MAGIC ![Schedules](https://github.com/DataSentics/odap-workshops/blob/olo-dbx-workshop/DBX/images/workflow.png?raw=true)
+# MAGIC 
+# MAGIC 
+# MAGIC 
+# MAGIC 
+# MAGIC   ![Schedules](https://github.com/DataSentics/odap-workshops/blob/olo-dbx-workshop/DBX/images/Schedule.png?raw=true)          ![Notification](https://github.com/DataSentics/odap-workshops/blob/olo-dbx-workshop/DBX/images/notifications.png?raw=true)
+# MAGIC   
+# MAGIC 
+# MAGIC 
 # MAGIC ### Delta Live Tables:
 # MAGIC A framework for building reliable, maintainable, and testable data processing pipelines.
+
+# COMMAND ----------
+
+# TODO
+# Vymyslet
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ## Clusters
 # MAGIC 
-# MAGIC ### 
+# MAGIC ### Interactive clusters
+# MAGIC 
+# MAGIC Interactive clusters are used to analyze data collaboratively with interactive notebooks. --> Mostly used in development phase.
+# MAGIC 
+# MAGIC ### Job clusters
+# MAGIC 
+# MAGIC Job clusters are used to run fast and robust automated workflows using the UI or API. --> Mostly used in production.
+# MAGIC 
+# MAGIC ### DBR (Databricks Runtime) version
+# MAGIC You can find there included packages.
+# MAGIC For example [10.4](https://docs.microsoft.com/en-us/azure/databricks/release-notes/runtime/10.4)
+
+# COMMAND ----------
+
+# TODO
+# View what notebooks are running on our cluster and cluster history in "Event log".
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## MLflow
+# MAGIC 
+# MAGIC [Documentation](https://docs.microsoft.com/en-us/azure/databricks/applications/mlflow/)
+# MAGIC 
+# MAGIC MLflow is an open source platform for managing the end-to-end machine learning lifecycle. It has the following primary components:
+# MAGIC 
+# MAGIC * Tracking: Allows you to track experiments to record and compare parameters and results.
+# MAGIC * Models: Allow you to manage and deploy models from a variety of ML libraries to a variety of model serving and inference platforms.
+# MAGIC * Projects: Allow you to package ML code in a reusable, reproducible form to share with other data scientists or transfer to production.
+# MAGIC * Model Registry: Allows you to centralize a model store for managing models’ full lifecycle stage transitions: from staging to production, with capabilities for versioning and annotating.
+# MAGIC * Model Serving: Allows you to host MLflow Models as REST endpoints.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC # Feature store
+# MAGIC 
+# MAGIC [Documentation](https://docs.microsoft.com/en-us/azure/databricks/applications/machine-learning/feature-store/)
+# MAGIC 
+# MAGIC A feature store is a centralized repository that enables data scientists to find and share features and also ensures that the same code used to compute the feature values is used for model training and inference.
