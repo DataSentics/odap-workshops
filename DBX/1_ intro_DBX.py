@@ -133,7 +133,21 @@ display(spark.read.table("iris_table"))
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ## Display HTML
+
+# COMMAND ----------
+
+displayHTML("<h1 style=\"color: green\">Hello HTML world!</h1>")
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ## Databricks Utils
+# MAGIC - fs - Manipulating the File system
+# MAGIC - widgets - Creating and accessing widgets
+# MAGIC - secrets - Accessing keys and tokens
+# MAGIC - notebook - Accessing metadata information about the current notebook (user, path, Databricks instance, ...)
+# MAGIC 
 # MAGIC * [Documentation](https://docs.databricks.com/dev-tools/databricks-utils.html)
 
 # COMMAND ----------
@@ -143,6 +157,10 @@ dbutils.help()
 # COMMAND ----------
 
 dbutils.fs.ls("dbfs:/FileStore/python-workshop")
+
+# COMMAND ----------
+
+dbutils.fs.cp("dbfs:/FileStore/python-workshop/iris.csv", "file:/tmp/iris.csv")
 
 # COMMAND ----------
 
