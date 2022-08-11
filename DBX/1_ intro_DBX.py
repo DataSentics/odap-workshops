@@ -8,8 +8,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ## Data Lakehouse
+# MAGIC %run ./Setup-SQL
 
 # COMMAND ----------
 
@@ -41,43 +40,6 @@
 # MAGIC ## Data Science & Data Engineering
 # MAGIC 
 # MAGIC Data Science & Data Engineering workspace is the most common workspace used by Data Engineering and Data Science professionals. Within this workspace, you will be able to create notebooks for writing code in either Python, Scala, SQL, or R languages. Notebooks can be shared, secured with visibility and access control policies, organized in hierarchical folder structures, and attached to a variety of high-powered compute clusters. These compute clusters can be attached at either the workspace or notebook level. It is within these notebooks where you will also be able to render your code execution results in either tabular, chart, or graph format.
-# MAGIC 
-# MAGIC * ### Workspace
-# MAGIC 
-# MAGIC     Your folder with your notebooks, libraries and MLFlow experiments.
-# MAGIC 
-# MAGIC * ### Repos
-# MAGIC     * Git functionality such as cloning a remote repo, managing branches, pushing and pulling changes, and visually comparing differences upon commit.
-# MAGIC     * Provides an API that you can integrate with your CI/CD pipeline.
-# MAGIC     * Provides security features such as allow lists to control access to Git repositories and detection of clear text secrets in source code.
-# MAGIC     * Databricks supports these Git providers:
-# MAGIC     
-# MAGIC       - GitHub
-# MAGIC       - Bitbucket Cloud
-# MAGIC       - GitLab
-# MAGIC       - Azure DevOps (not available in Azure China regions)
-# MAGIC       - AWS CodeCommit
-# MAGIC       - GitHub AE
-# MAGIC 
-# MAGIC * ### Recents
-# MAGIC   List of your recently viewd files.
-# MAGIC   
-# MAGIC * ### Search
-# MAGIC   Allowes to search throught tables, notebooks, files and folders.
-# MAGIC   
-# MAGIC * ### Data
-# MAGIC   Access to all database tables and file system.
-# MAGIC   
-# MAGIC   #### Databricks File System (DBFS)
-# MAGIC 
-# MAGIC     A filesystem abstraction layer over a blob store. It contains directories, which can contain files (data files, libraries, and images), and other directories. DBFS is automatically populated with some datasets that you can use to learn Azure Databricks.
-# MAGIC 
-# MAGIC 
-# MAGIC * ### Compute
-# MAGIC * ### Workflows
-# MAGIC * ### Partner Connect
-# MAGIC * ### Help
-# MAGIC * ### Settings
 
 # COMMAND ----------
 
@@ -119,15 +81,6 @@ for i in my_list:
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Run another notebook
-
-# COMMAND ----------
-
-# MAGIC %run ./test-notebook
-
-# COMMAND ----------
-
-# MAGIC %md
 # MAGIC ### Install package
 
 # COMMAND ----------
@@ -152,6 +105,7 @@ dbutils.fs.ls("dbfs:/FileStore/python-workshop")
 
 # MAGIC %md
 # MAGIC ## Widgets
+# MAGIC Widgets are persistent after closing and opening of a notebook
 
 # COMMAND ----------
 
@@ -216,13 +170,37 @@ username = username.replace('.', '_')
 database_name = username + "_db"
 
 dbutils.widgets.dropdown("table", "iris_table", [database[0] for database in spark.catalog.listTables(database_name)])
+dbutils.widgets.text("filter_param", "1.0")
+
+# COMMAND ----------
+
+filter_param = float(dbutils.widgets.get("filter_param"))
+spark.read.table("iris_table").filter(f"SepalWidth > {filter_param}").display()
 
 # COMMAND ----------
 
 # MAGIC %sql
 # MAGIC SELECT *
-# MAGIC FROM ${table}
+# MAGIC FROM ondrej_lostak_db.${table}
 # MAGIC LIMIT 100
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Run another notebook
+
+# COMMAND ----------
+
+dbutils.notebook.run("./test-notebook", 0)
+
+# COMMAND ----------
+
+# MAGIC %run ./test-notebook
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### TODO
 
 # COMMAND ----------
 
@@ -230,7 +208,7 @@ dbutils.widgets.dropdown("table", "iris_table", [database[0] for database in spa
 
 # COMMAND ----------
 
-# TODO create new dropbox widget with the types of iris {"Iris-setosa", "Iris-versicolor", "Iris-virginica"} from table iris_table
+# TODO create new dropdown widget with the types of iris {"Iris-setosa", "Iris-versicolor", "Iris-virginica"} from table iris_table
 
 # COMMAND ----------
 
@@ -261,8 +239,6 @@ dbutils.widgets.dropdown("table", "iris_table", [database[0] for database in spa
 # MAGIC The component that stores all the structure information of the various tables and partitions in the data warehouse including column and column type information, the serializers and deserializers necessary to read and write data, and the corresponding files where the data is stored.
 # MAGIC 
 # MAGIC ![Metastore](https://github.com/DataSentics/odap-workshops/blob/main/DBX/images/metastore.png?raw=true)
-# MAGIC 
-# MAGIC * ### Delta Table
 
 # COMMAND ----------
 
@@ -277,8 +253,10 @@ df.write
   .mode("overwrite")
   .partitionBy("day")
   .format("delta")
-  .save("/FileStore/dbx-workshop/tips")
+  .option("path", "/FileStore/dbx-workshop/tips")
+  .saveAsTable("tips_from_delta")
 )
+# save as table
 
 df_read =(spark
       .read
@@ -289,10 +267,6 @@ df_read =(spark
 print("Table from delta:")
 display(df_read)
 
-table_name = "tips_from_delta"
-delta_path = "/FileStore/dbx-workshop/tips"
-spark.sql(f"CREATE TABLE IF NOT EXISTS {table_name} USING DELTA LOCATION '{delta_path}'")
-
 # COMMAND ----------
 
 # MAGIC %sql
@@ -302,7 +276,12 @@ spark.sql(f"CREATE TABLE IF NOT EXISTS {table_name} USING DELTA LOCATION '{delta
 
 # COMMAND ----------
 
-# TODO: Just run this cell. And fill in your first name.
+# MAGIC %md
+# MAGIC ### TODO
+
+# COMMAND ----------
+
+# TODO: Just run this cell. And fill in your first name to the widget.
 dbutils.widgets.text("your_name", "")
 
 # COMMAND ----------
@@ -320,6 +299,55 @@ destination_iris = f'/FileStore/dbx-workshop/iris_{your_name}'
 
 # TODO: Just run this cell.
 dbutils.widgets.removeAll()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Clusters
+# MAGIC 
+# MAGIC An Azure Databricks cluster is a set of computation resources and configurations on which you run data engineering, data science, and data analytics workloads, such as production ETL pipelines, streaming analytics, ad-hoc analytics, and machine learning.
+# MAGIC 
+# MAGIC ![cluster](https://github.com/DataSentics/odap-workshops/blob/olo-dbx-workshop/DBX/images/cluster.png?raw=true)
+# MAGIC 
+# MAGIC ### Interactive clusters
+# MAGIC 
+# MAGIC Interactive clusters are used to analyze data collaboratively with interactive notebooks and are much more expensive. --> Mostly used in development phase.
+# MAGIC 
+# MAGIC ![cluster_interactive](https://github.com/DataSentics/odap-workshops/blob/olo-dbx-workshop/DBX/images/all_purpous_clusters.png?raw=true)
+# MAGIC 
+# MAGIC ### Job clusters
+# MAGIC 
+# MAGIC Job clusters are used to run fast and robust automated workflows using the UI or API and are cheaper. --> Mostly used in production.
+# MAGIC 
+# MAGIC ![cluster_interactive](https://github.com/DataSentics/odap-workshops/blob/olo-dbx-workshop/DBX/images/job_clusters.png?raw=true)
+# MAGIC 
+# MAGIC ### DBR (Databricks Runtime) version
+# MAGIC You can find there included packages. For example [10.4](https://docs.microsoft.com/en-us/azure/databricks/release-notes/runtime/10.4)
+# MAGIC 
+# MAGIC There are 3 versions:
+# MAGIC * Standard
+# MAGIC * ML
+# MAGIC * GBU
+# MAGIC 
+# MAGIC ### Databricks pricing
+# MAGIC 
+# MAGIC [Pricing](https://azure.microsoft.com/en-us/pricing/details/databricks/)
+# MAGIC 
+# MAGIC ### Azure VM pricing
+# MAGIC 
+# MAGIC [Pricing](https://docs.microsoft.com/en-us/azure/virtual-machines/dv4-dsv4-series)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### TODO
+
+# COMMAND ----------
+
+# TODO
+# 1) View what notebooks are running on our cluster and cluster history in "Event log".
+# 2) Create a cluster with parameters Runtime: "10.4 ML without GPU", Worker: Standard_D4s_v3, enable autoscaling "min 1" and "max 3", Driver: "Standard_f8"
+# 3) Find in the documentation what version of scikit-learn is included in Databricks Runtime version 10.4
 
 # COMMAND ----------
 
@@ -345,33 +373,6 @@ dbutils.widgets.removeAll()
 
 # COMMAND ----------
 
-# TODO
-# Vymyslet
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Clusters
-# MAGIC 
-# MAGIC ### Interactive clusters
-# MAGIC 
-# MAGIC Interactive clusters are used to analyze data collaboratively with interactive notebooks. --> Mostly used in development phase.
-# MAGIC 
-# MAGIC ### Job clusters
-# MAGIC 
-# MAGIC Job clusters are used to run fast and robust automated workflows using the UI or API. --> Mostly used in production.
-# MAGIC 
-# MAGIC ### DBR (Databricks Runtime) version
-# MAGIC You can find there included packages.
-# MAGIC For example [10.4](https://docs.microsoft.com/en-us/azure/databricks/release-notes/runtime/10.4)
-
-# COMMAND ----------
-
-# TODO
-# View what notebooks are running on our cluster and cluster history in "Event log".
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ## MLflow
 # MAGIC 
@@ -384,6 +385,8 @@ dbutils.widgets.removeAll()
 # MAGIC * Projects: Allow you to package ML code in a reusable, reproducible form to share with other data scientists or transfer to production.
 # MAGIC * Model Registry: Allows you to centralize a model store for managing models’ full lifecycle stage transitions: from staging to production, with capabilities for versioning and annotating.
 # MAGIC * Model Serving: Allows you to host MLflow Models as REST endpoints.
+# MAGIC 
+# MAGIC example in ./MLflow.py
 
 # COMMAND ----------
 
@@ -393,3 +396,9 @@ dbutils.widgets.removeAll()
 # MAGIC [Documentation](https://docs.microsoft.com/en-us/azure/databricks/applications/machine-learning/feature-store/)
 # MAGIC 
 # MAGIC A feature store is a centralized repository that enables data scientists to find and share features and also ensures that the same code used to compute the feature values is used for model training and inference.
+
+# COMMAND ----------
+
+# Assignment 
+
+# (table -> transform -> save) -> (table -> transform -> visualize -> save)
