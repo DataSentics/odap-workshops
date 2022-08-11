@@ -481,9 +481,3 @@ dbutils.widgets.removeAll()
 # MAGIC [Documentation](https://docs.microsoft.com/en-us/azure/databricks/applications/machine-learning/feature-store/)
 # MAGIC 
 # MAGIC A feature store is a centralized repository that enables data scientists to find and share features and also ensures that the same code used to compute the feature values is used for model training and inference.
-
-# COMMAND ----------
-
-# Assignment 
-
-# (table -> transform -> save) -> (table -> transform -> visualize -> save)
