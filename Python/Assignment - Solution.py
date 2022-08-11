@@ -173,3 +173,174 @@ plt.show()
 importances = clf_forest.feature_importances_
 feature_importances = pd.Series(importances, index=df_titanic_features.columns)
 feature_importances.sort_values(ascending = False).head(10).plot.bar(figsize=[10,8])
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Questions and clearifications
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### KMeans
+
+# COMMAND ----------
+
+from sklearn.cluster import KMeans
+from sklearn.model_selection import cross_validate
+import pandas as pd
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+import numpy as np
+
+df_iris = pd.read_csv("./data/iris.csv")
+df_iris_data = df_iris.drop(columns=["Name"])
+
+kmeans = KMeans(n_clusters=3, random_state=42) 
+kmeans.fit(df_iris_data)
+print(kmeans.labels_)
+
+colors = {0: "red", 1: "green", 2: "blue"}
+df_iris.plot.scatter(
+  "PetalLength", "PetalWidth", c=pd.Series(kmeans.labels_).map(colors), figsize=(10, 6)
+)
+
+df_iris.plot.scatter(
+  "SepalLength", "SepalWidth", c=pd.Series(kmeans.labels_).map(colors), figsize=(10, 6)
+)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Cross validation
+
+# COMMAND ----------
+
+from sklearn.model_selection import cross_val_score
+
+# First we need to drop null values because..
+df_titanic = df_titanic.dropna()
+# Then we need to encode the labels because ...
+df_titanic_label = df_titanic["Survived"]
+label_encoder = preprocessing.LabelEncoder()
+label_encoder.fit(df_titanic['Survived'])
+df_titanic['Survived']=label_encoder.transform(df_titanic['Survived'])
+# Than we need to drop .... because 
+df_titanic_features = df_titanic.drop(columns=["PassengerId", "Name", "Cabin", "Survived", "Ticket"])
+df_titanic_features = pd.get_dummies(data=df_titanic_features, drop_first=False)
+
+# TODO Perform the train test split
+x_train,x_test,y_train,y_test = train_test_split(df_titanic_features, df_titanic_label, test_size=0.25, random_state=123)
+# TODO Create RandomForestClassifier from the imported module RandomForestClassifier. It is already imported for you
+clf_forest = RandomForestClassifier(random_state=0)
+
+# 10-Fold Cross validation
+cross_val_score(clf_forest, x_train, y_train, cv=10)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Train - Validation - Test sets 
+
+# COMMAND ----------
+
+# First we need to drop null values because..
+df_titanic = df_titanic.dropna()
+# Then we need to encode the labels because ...
+df_titanic_label = df_titanic["Survived"]
+label_encoder = preprocessing.LabelEncoder()
+label_encoder.fit(df_titanic['Survived'])
+df_titanic['Survived']=label_encoder.transform(df_titanic['Survived'])
+# Than we need to drop .... because 
+df_titanic_features = df_titanic.drop(columns=["PassengerId", "Name", "Cabin", "Survived", "Ticket"])
+df_titanic_features = pd.get_dummies(data=df_titanic_features, drop_first=False)
+
+X_train, X_test, y_train, y_test = train_test_split(df_titanic_features, df_titanic_label, train_size=0.8)
+
+X_train, X_valid, y_train, y_valid = train_test_split(X_train, y_train, train_size=0.9)
+
+print(f"Train size: {len(X_train)}")
+print(f"Validation size: {len(X_valid)}")
+print(f"Test size: {len(X_test)}")
+
+# COMMAND ----------
+
+# MAGIC %md 
+# MAGIC ### Map vs Apply
+# MAGIC More can be read on the link below
+# MAGIC https://stackoverflow.com/questions/19798153/difference-between-map-applymap-and-apply-methods-in-pandas
+
+# COMMAND ----------
+
+data = [['tom', 10], ['nick', 15], ['juli', 14]]
+df = pd.DataFrame(data, columns=['Name', 'Age'])
+df
+
+# COMMAND ----------
+
+# Map is defined only for Series(a column) and is optimized for mapping values from one domain to another
+# Map accepts dict, Series or callable(function) as a argument
+print(df['Name'].map({'tom': 'lom', 'nick': 'slick', 'juli': 'dandy'}))
+# df.map({'tom': 'lom', 'nick': 'slick', 'juli': 'dandy'}) will produce an error
+
+# COMMAND ----------
+
+# Apply is defined both on Dataframe and Series, and is designated to apply a function on the data
+# Apply accepts callable only
+df['Name'].apply(lambda x: x+" No_surname:(")
+df.apply(lambda x: x * 2)
+
+# COMMAND ----------
+
+# MAGIC %md 
+# MAGIC ### *args and **kwargs
+
+# COMMAND ----------
+
+params = {"b": 1, "a": 2, "c": 3}
+
+def test(a, b, c):
+    print(f"a={a}")
+    print(f"b={b}")
+    print(f"c={c}")
+
+test(**params)
+
+# COMMAND ----------
+
+params = [x for x in range(3)]
+
+def test(a, b, c):
+    print(f"a={a}")
+    print(f"b={b}")
+    print(f"c={c}")
+
+test(*params)
+
+# COMMAND ----------
+
+# MAGIC %md 
+# MAGIC ### Cache decorator(I like speed)
+
+# COMMAND ----------
+
+from functools import lru_cache
+
+def fib(n):
+    if n < 2:
+        return n
+    return fib(n-2) + fib(n-1)
+
+@lru_cache
+def fib_with_cache(n):
+    if n < 2:
+        return n
+    return fib(n-2) + fib(n-1)
+
+# COMMAND ----------
+
+fib(36)
+
+# COMMAND ----------
+
+fib_witch_cache(36)
