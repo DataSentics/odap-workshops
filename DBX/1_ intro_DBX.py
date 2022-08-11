@@ -47,6 +47,7 @@
 # MAGIC ## Notebooks
 # MAGIC 
 # MAGIC * Revision history
+# MAGIC * Comments for collaboration
 # MAGIC * Markdown + 4 languages (default python):
 
 # COMMAND ----------
@@ -81,11 +82,53 @@ for i in my_list:
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC 
+# MAGIC # Magic commands
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ### Install package
+# MAGIC %pip
+# MAGIC 
+# MAGIC **!!! Restarts the environment**
 
 # COMMAND ----------
 
 # MAGIC %pip install matplotlib
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Run notebook in current scope
+# MAGIC % run
+
+# COMMAND ----------
+
+# MAGIC %run ./test-notebook
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC # Global objects
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Spark
+
+# COMMAND ----------
+
+spark
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Display
+
+# COMMAND ----------
+
+display(spark.read.table("iris_table"))
 
 # COMMAND ----------
 
@@ -109,7 +152,7 @@ dbutils.fs.ls("dbfs:/FileStore/python-workshop")
 
 # COMMAND ----------
 
-# DBTITLE 1,Dropbox
+# DBTITLE 1,Dropdown
 dbutils.widgets.dropdown("state", "CZ", ["CZ", "SK", "PL", "D"])
 
 # COMMAND ----------
@@ -154,6 +197,10 @@ print(f"My favorite movie is {genre}.")
 
 # COMMAND ----------
 
+# Python revision TODO: try converting the output of the `genre` widget to a list
+
+# COMMAND ----------
+
 # Remove all widgets.
 dbutils.widgets.removeAll()
 
@@ -165,9 +212,12 @@ dbutils.widgets.removeAll()
 # COMMAND ----------
 
 username = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get()
+
 username = username.split("@")[0]
 username = username.replace('.', '_')
+print("Username:", username)
 database_name = username + "_db"
+print("DB name:", database_name)
 
 dbutils.widgets.dropdown("table", "iris_table", [database[0] for database in spark.catalog.listTables(database_name)])
 dbutils.widgets.text("filter_param", "1.0")
@@ -181,7 +231,7 @@ spark.read.table("iris_table").filter(f"SepalWidth > {filter_param}").display()
 
 # MAGIC %sql
 # MAGIC SELECT *
-# MAGIC FROM ondrej_lostak_db.${table}
+# MAGIC FROM lukas_langr_db.${table}
 # MAGIC LIMIT 100
 
 # COMMAND ----------
@@ -195,20 +245,16 @@ dbutils.notebook.run("./test-notebook", 0)
 
 # COMMAND ----------
 
-# MAGIC %run ./test-notebook
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ### TODO
 
 # COMMAND ----------
 
-# TODO create a simple notebook and run it in this cell
+# TODO create a simple notebook in the current folder and run it in this cell
 
 # COMMAND ----------
 
-# TODO create new dropdown widget with the types of iris {"Iris-setosa", "Iris-versicolor", "Iris-virginica"} from table iris_table
+# TODO create new dropdown widget called `name` with the types of iris {"Iris-setosa", "Iris-versicolor", "Iris-virginica"} from table iris_table
 
 # COMMAND ----------
 
@@ -242,6 +288,19 @@ dbutils.notebook.run("./test-notebook", 0)
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC 
+# MAGIC ## Delta format
+# MAGIC 
+# MAGIC - time travel/historization
+# MAGIC - schema evolution
+# MAGIC - caching
+# MAGIC - MERGE operation
+# MAGIC 
+# MAGIC [Introduction](https://docs.microsoft.com/en-us/azure/databricks/delta/delta-intro)
+
+# COMMAND ----------
+
 # DBTITLE 1,Delta Table
 df = spark.read.option("header", "true").csv('file:/dbfs/FileStore/python-workshop/tips.csv')
 
@@ -249,20 +308,21 @@ print("Table from csv:")
 display(df)
 
 (
-df.write
-  .mode("overwrite")
-  .partitionBy("day")
-  .format("delta")
-  .option("path", "/FileStore/dbx-workshop/tips")
-  .saveAsTable("tips_from_delta")
+  df.write
+    .mode("overwrite")
+    .partitionBy("day")
+    .format("delta")
+    .option("path", "/FileStore/dbx-workshop/tips")
+    .saveAsTable("tips_from_delta")
 )
 # save as table
 
-df_read =(spark
+df_read =(
+    spark
       .read
       .format("delta")
       .load("/FileStore/dbx-workshop/tips")
-    )
+)
 
 print("Table from delta:")
 display(df_read)
@@ -273,6 +333,13 @@ display(df_read)
 # MAGIC -- now we can query the delta table as SQL table
 # MAGIC SELECT *
 # MAGIC FROM tips_from_delta;
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC -- now we can query the delta from a path
+# MAGIC SELECT *
+# MAGIC FROM delta.`/FileStore/dbx-workshop/tips`;
 
 # COMMAND ----------
 
