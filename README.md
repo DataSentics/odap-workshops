@@ -13,4 +13,5 @@ https://forms.microsoft.com/Pages/DesignPageV2.aspx?subpage=design&FormId=qidRWJ
 Ask Toso or Ondra Lostak for access 
 
 **Python basics** https://create.kahoot.it/details/python-basics/0a5b9faa-ae16-4f8b-811c-afd3c7525523
+
 **Python recap** https://create.kahoot.it/details/7a6b9db9-72c5-4a1d-941a-32b52eddcf89
