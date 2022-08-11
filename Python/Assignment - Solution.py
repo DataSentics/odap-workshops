@@ -287,8 +287,16 @@ print(df['Name'].map({'tom': 'lom', 'nick': 'slick', 'juli': 'dandy'}))
 
 # Apply is defined both on Dataframe and Series, and is designated to apply a function on the data
 # Apply accepts callable only
-df['Name'].apply(lambda x: x+" No_surname:(")
-df.apply(lambda x: x * 2)
+# It can be applied to both columns and rows
+
+# Columns
+df['NameAge'] = df.apply(lambda row: row.Name + " " + str(row.Age), axis=1)
+df
+
+# COMMAND ----------
+
+# Rows
+df.apply(lambda x: x*2)
 
 # COMMAND ----------
 
@@ -335,7 +343,7 @@ def fib(n):
 def fib_with_cache(n):
     if n < 2:
         return n
-    return fib(n-2) + fib(n-1)
+    return fib_with_cache(n-2) + fib_with_cache(n-1)
 
 # COMMAND ----------
 
@@ -343,4 +351,4 @@ fib(36)
 
 # COMMAND ----------
 
-fib_witch_cache(36)
+fib_with_cache(36)
