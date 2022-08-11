@@ -77,7 +77,7 @@ for i in my_list:
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC SELECT * FROM iris_table;
+# MAGIC SELECT 2, 5, "apple", 78
 
 # COMMAND ----------
 
