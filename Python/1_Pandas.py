@@ -151,6 +151,14 @@ filtered_tips
 
 # COMMAND ----------
 
+# DBTITLE 1,TODO
+# TODO
+# Filter rows in dataframe df_tips where total_bill is higher or equal than 20 and smoker is "No".
+# Select columns "total_bill", "tip", "day" and "time". Display 20 first rows.
+# Find the number of rows in the filtered dataframe.
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ### Filter NaN values and IN
 
@@ -182,8 +190,9 @@ df.isnull().any()
 
 # COMMAND ----------
 
-# drop NaN values
+# drop NaN values / fill NaN values
 df.dropna()
+#df.fillna(0)
 
 # COMMAND ----------
 
@@ -212,6 +221,14 @@ df_tips.iloc[0:25, 0:4]
 
 # COMMAND ----------
 
+# DBTITLE 1,TODO
+# TODO
+# Create two new dataframes:
+# First: Select from tips rows where "sex" is "Female" and select columns "total_bill", "tip", "day" and "time". Hint: Use method loc.
+# Second: Select from tips columns "tip", "sex" and "smoker" and first 30 rows. Hint: Use method iloc.
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ### Add new column
 
@@ -234,6 +251,36 @@ df_tips.head(30)
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ## Map
+
+# COMMAND ----------
+
+# Map is defined only for Series(a column) and is optimized for mapping values from one domain to another
+# Map accepts dict, Series or callable(function) as a argument
+df_tips["family"] = (df_tips["size"] > 2).map({True: "Yes", False: "No"})
+df_tips.head(30)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Apply
+
+# COMMAND ----------
+
+# Apply is defined both on Dataframe and Series, and is designated to apply a function on the data
+# Apply accepts callable only
+df_tips["family"] = (df_tips["family"]).apply(lambda x: "Is family: " + x)
+df_tips.head(30)
+
+# COMMAND ----------
+
+# DBTITLE 1,TODO
+# TODO
+# Create a new column as how much percent was the tip from total_bill
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ### Rename column
 
 # COMMAND ----------
@@ -249,6 +296,14 @@ df_renamed
 
 # COMMAND ----------
 
+df_air_quality_no2
+
+# COMMAND ----------
+
+df_air_quality_pm25
+
+# COMMAND ----------
+
 # DBTITLE 1,SQL
 # MAGIC %sql
 # MAGIC SELECT * 
@@ -258,7 +313,7 @@ df_renamed
 # COMMAND ----------
 
 # DBTITLE 1,Pandas
-pd.merge(df_air_quality_no2, df_air_quality_pm25, how="left", on=["location", "date_utc"])
+pd.merge(df_air_quality_no2, df_air_quality_pm25, how="left", on=["date_utc", "location"])
 
 # COMMAND ----------
 
@@ -283,6 +338,12 @@ pd.merge(df_air_quality_no2, df_air_quality_pm25, how="left", on=["location", "d
 
 # DBTITLE 1,Pandas
 pd.concat([df_air_quality_pm25, df_air_quality_no2])
+
+# COMMAND ----------
+
+# DBTITLE 1,TODO
+# TODO
+# Join two tables df_air_quality_no2, df_air_quality_pm25 (how: "full", on: "city", "country", "date_utc", "location".
 
 # COMMAND ----------
 
@@ -360,6 +421,11 @@ df_tips.groupby(["day", "time"]).mean()
 
 # DBTITLE 1,Pandas
 df_tips["day"].value_counts()
+
+# COMMAND ----------
+
+# TODO
+# Group tips by sex and find count of values and tip mean.
 
 # COMMAND ----------
 
