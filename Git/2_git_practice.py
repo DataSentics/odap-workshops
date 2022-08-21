@@ -28,13 +28,13 @@
 # MAGIC 2. Click Clone
 # MAGIC 3. Click Https
 # MAGIC 4. Copy the URL
-# MAGIC ![github-clone-repo](clone-repo.png)
+# MAGIC ![github-clone-repo](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/clone-repo.png?raw=true)
 # MAGIC 5. Go to back to Databricks
 # MAGIC 6. Click Repos
 # MAGIC 7. Click Add Repo
 # MAGIC 8. Enter the URL
-# MAGIC ![github-clone-repo](add-repo-1.png)
-# MAGIC ![github-clone-repo](add-repo-2.png)
+# MAGIC ![github-clone-repo](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/add-repo-1.png?raw=true)
+# MAGIC ![github-clone-repo](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/add-repo-2.png?raw=true)
 # MAGIC 
 # MAGIC **Difference between HTTPS and SSH authentication**
 # MAGIC - HTTPS is based on user-name and password or PAT tokens. Used for interaction with Git from Databricks.
@@ -51,17 +51,18 @@
 # MAGIC Creating a new branch resembles creating a new package in postal service with already prepared content. 
 # MAGIC 
 # MAGIC **Main branch**
+# MAGIC 
 # MAGIC In the repository there should always be one main branch which contains the production. This branch is kept protected and no one can push into it directly. Putting changes into this branch is done through pull-requests which will be explained later. The number of protected branches can be higher. For example one branch for development one for testing and one for production.
 # MAGIC 
 # MAGIC #### To create a new branch for your development:
 # MAGIC 1. Click Repos
 # MAGIC 2. Click your current repository
-# MAGIC ![git-branch-1](git-branch-1)
+# MAGIC ![git-branch-1](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-branch-1.png?raw=true)
 # MAGIC 3. Click create branch
-# MAGIC ![git-branch-1](git-branch-2)
+# MAGIC ![git-branch-1](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-branch-2.png?raw=true)
 # MAGIC 4. Enter your branch name. In the branch name should be specified to whom the branch belongs and what does it contain. Eg. tbo-person-age-calculation. Based-on tells you on which branch your current branch will be based on. 
 # MAGIC 5. Click Create
-# MAGIC ![git-branch-1](git-branch-3)
+# MAGIC ![git-branch-1](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-branch-3.png?raw=true)
 # MAGIC Now you created a new branch and automatically switched your context to it
 # MAGIC 
 # MAGIC In git CLI to create a new branch: ```git checkout -b "branch-name"```
@@ -73,10 +74,10 @@
 # MAGIC #### To switch to a different branch
 # MAGIC 1. Click Repos
 # MAGIC 2. Click your current repository
-# MAGIC ![git-branch-1](asfas)
+# MAGIC ![git-branch-1](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-branch-1.png?raw=true)
 # MAGIC 3. Click your current branch name
 # MAGIC 4. Select desired branch from drop-down
-# MAGIC ![git-branch-switch](switch-branch)
+# MAGIC ![git-branch-switch](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/switch-branch.png?raw=true)
 # MAGIC 
 # MAGIC 
 # MAGIC Now you switched your context to the desired branch. Look for any files that changed
@@ -122,10 +123,11 @@
 # MAGIC ### Git add, commit and push in Databricks
 # MAGIC 1. Click Repos
 # MAGIC 2. Click your repository
+# MAGIC ![git-branch-1](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-branch-1.png?raw=true)
 # MAGIC 3. Check your changes. Keep the changes you are satisfied with and discard any changes you are not satisfied with.
 # MAGIC 4. Write your commit message describing the changes you made
 # MAGIC 5. Click commit and push
-# MAGIC ![git-changes](asda)
+# MAGIC ![git-changes](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-add-commit-push.png?raw=true)
 
 # COMMAND ----------
 
@@ -137,10 +139,10 @@
 # MAGIC 1. Go to your repository on github.com
 # MAGIC 2. Click pull-requests
 # MAGIC 3. Click new pull-request
+# MAGIC ![create-pr1](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-create-pr-1.png?raw=true)
 # MAGIC 4. Select from which branch the new pull request will be created
 # MAGIC 5. Click create-pull-request
-# MAGIC ![create-pr1](asfsad)
-# MAGIC ![create-pr2](asfgas)
+# MAGIC ![create-pr1](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-create-pr-2.png?raw=true)
 # MAGIC 
 # MAGIC Once a pull-request has been created you need to ask someone to review your changes. To do so you can just send him the link to your pull-request. During the review for the person 
 
@@ -160,7 +162,7 @@
 # MAGIC 2. Click your repository
 # MAGIC 3. Click pull
 # MAGIC 
-# MAGIC ![git-pull](safwqesad)
+# MAGIC ![git-pull](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-pull.png?raw=true)
 
 # COMMAND ----------
 
@@ -168,18 +170,16 @@
 # MAGIC ### Practice time
 # MAGIC Your colleague went for a holiady but the task he was working on needs to be finished until tomorrow. Luckily he pushed his work to GitHub before leaving. 
 # MAGIC **TODO**
-# MAGIC 1. Pull the work of your colleague. The branch in which is the work is called tbo-wrong-table-bug-fix in repository git-practice.
+# MAGIC 1. Pull the work of your colleague. The branch in which is the work is called ```tbo-wrong-table-name-bug-fix``` in repository git-practice.
 # MAGIC 2. Create your own branch based on the branch of your colleague.
-# MAGIC 3. Make the necessary changes to fix the bug.
+# MAGIC 3. Make the necessary changes to fix the bug. To reveal the bug look for notebook in the file repository and try to run it. 
 # MAGIC 4. Create a pull-request.
 # MAGIC 5. Make sure to get a code review.
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Let's create a repository
-# MAGIC 1. Open [Github](https://github.com)
-# MAGIC 2. Click new repository
+# MAGIC ### Fixing typical issues in git
 
 # COMMAND ----------
 
