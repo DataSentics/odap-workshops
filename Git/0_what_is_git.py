@@ -7,6 +7,7 @@
 # MAGIC - Hey Toso I saw that we were both editing the same file, how should we merge the file together?
 # MAGIC - What the hell is this function doing? Who introduced and when this function? Toso was it you?
 # MAGIC - Hey Anet I developed this new functionality
+# MAGIC - Hmm Toso once we are done with development how will we be tracking all the versions?
 # MAGIC 
 # MAGIC **A typical folder structure for Toso when working on a project:**
 # MAGIC - Toso_project
@@ -32,21 +33,46 @@
 # MAGIC - Git is easy to learn and has a tiny footprint with lightning fast performance.
 # MAGIC - Records the changes made over time to files in a special repository
 # MAGIC - Most popular version control system
-# MAGIC - More information can be found in the documentation https://git-scm.com/doc
+# MAGIC - Git stores all the history in a hidden folder called **.git** in every repository. It maintains a snapshots of file-system as blobs, trees and branches. [More info](https://www.youtube.com/watch?v=MyvyqdQ3OjI)
+# MAGIC - [Documentation to Git](https://git-scm.com/doc)
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ![what_is_git](https://github.com/DataSentics/odap-workshops/main/Git/images/git-branches-merge.png?raw=true)
+# MAGIC ![what_is_git](https://github.com/DataSentics/odap-workshops/blob/tbo-git/Git/images/git-branches-merge.png?raw=true)
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC **Advantages of git**:
+# MAGIC ### GitHub
+# MAGIC GitHub, Inc., is an Internet hosting service for software development and version control using Git.
+# MAGIC 
+# MAGIC It provides the distributed version control of Git plus access control, bug tracking, software feature requests, task management, continuous integration, and wikis for every project.
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ![github_logo]()
+# MAGIC ![github_repo]()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Advantages of git and GitHub:
 # MAGIC - Distributed development.
 # MAGIC - Easy to share your work.
 # MAGIC - Easy to make code review.
+# MAGIC - Easy to keep track of different versions
 # MAGIC - When was the last time a line was edited?
 # MAGIC - Who was the person that made the change?
 # MAGIC - What changes were made?
 # MAGIC - Possibility to return to the past. 
+# MAGIC - Possibility of CI/CD processes
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Interacting with Git:
+# MAGIC - Using command line interface(CLI)
+# MAGIC - Using 3rd party GUI on your PC
+# MAGIC - Using Databricks Repos
