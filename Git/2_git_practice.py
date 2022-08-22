@@ -179,9 +179,65 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Fixing typical issues in git
+# MAGIC ### Conflicts in git pull requests
+# MAGIC When you made certain changes to a file and someone else also made changes to the same file git can usually take care of it. But sometimes it happen that git is not able to choose which changes to keep and therefore creates conflicts in your pull-request. 
+# MAGIC 
+# MAGIC An example can be seen if we try to create pull-request in repository ```git-practice``` from branch ```tbo-new-qoute``` to ```main```.
+# MAGIC 
+# MAGIC ![git-conflict-1](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-conflict-1.png?raw=true)
+# MAGIC 
+# MAGIC To resolve the conflicts we locate resolve-conflicts button and click it
+# MAGIC 
+# MAGIC ![git-conflict-2](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-conflict-2.png?raw=true)
+# MAGIC 
+# MAGIC Than we are met with the following code:
+# MAGIC 
+# MAGIC ```
+# MAGIC <<<<<<< tbo-new-qoute
+# MAGIC Changes I made to this file
+# MAGIC =======
+# MAGIC Changes someone else made to a file.
+# MAGIC >>>>>>> main
+# MAGIC ```
+# MAGIC 
+# MAGIC ![git-conflict-3](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-conflict-3.png?raw=true)
+# MAGIC 
+# MAGIC To fix the conflict we need to delete one of the changes that has been made. We need to understand the code and choose the correct change. In this case we want to keep the change that has been made in ```tbo-new-qoute``` branch. To keep the change we just delete everything else until we are met with following:
+# MAGIC 
+# MAGIC ```Changes I made to this file```
+# MAGIC 
+# MAGIC Than we just click Mark as resolved.
+# MAGIC 
+# MAGIC ![git-conflict-4](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-conflict-4.png?raw=true)
+# MAGIC 
+# MAGIC And than Commit Merge
+# MAGIC 
+# MAGIC ![git-conflict-5](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-conflict-5.png?raw=true)
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### .gitignore
+# MAGIC ### Pull fails
+# MAGIC Sometimes when two of you are working on the same branch it might happen that your colleague pushed some changes on to the branch. Than you make some changes on the same branch. Than you want to pull the changes of your colleague. This will result in a conflict that requires special solving. **This is why you always try to keep the branches just for single person**.
+# MAGIC 
+# MAGIC 1. Change your branch to ```cs-pull-conflict-example```
+# MAGIC 2. Make some changes to conflict.txt
+# MAGIC 3. Give Toso or Lukas some time to push into the  ```cs-pull-conflict-example```
+# MAGIC 4. Try to pull the changes. A window will pop-up showing you and error and requiring you to create pull-request to fix the conflicts
+# MAGIC 5. Click Resolve conflict using PR
+# MAGIC ![git-pull-conflict-1](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-pull-conflict-1.png?raw=true)
+# MAGIC 6. Enter branch name into Branch and click commint to new branch
+# MAGIC ![git-pull-conflict-2](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-pull-conflict-2.png?raw=true)
+# MAGIC 7. Create a pull request from the new branch into the old one
+# MAGIC ![git-pull-conflict-3](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-pull-conflict-3.png?raw=true)
+# MAGIC 8. Follow the same steps as when fixing conflicts from above
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ### Interesting (advanced) topics for self-study.
+# MAGIC - .gitignore
+# MAGIC - Create a new repo
+# MAGIC - Git Graph
+# MAGIC - GitHub Actions
+# MAGIC - Continuos Integration(CI)/Continuos Delivery(CD) on GitHub
