@@ -36,15 +36,15 @@ dbutils.widgets.text("name", "")
 
 # MAGIC %md
 # MAGIC ### Event triggered jobs
-# MAGIC Unfortunately currently event triggered jobs are not supported. Databricks workflows is still under development and they should come soon. But if you are concerned about triggering job on adding a file to certain cloud storage this is possible using auto-loader and cloud files. 
+# MAGIC Unfortunately currently event triggered jobs are not supported. Databricks workflows is still under development and they should come soon. But if you are concerned about triggering job on adding a file to certain cloud storage this is possible using auto-loader and cloud files (which will be shown in detail at the **DE Deep Dive**)
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC ### Reusing functions in databricks
-# MAGIC One way is to run different notebook from current notebook using ```dbutils.notebooks.run()```. This way the functions from called notebook will become available in current notebook. But this is anti-pattern because you do no know which functions has been imported. 
+# MAGIC One way is to run different notebook from current notebook using ```%run /path/to/some/library_notebook```. This way the functions from called notebook will become available in current notebook. But this is **anti-pattern** because you do no know which functions has been imported. 
 # MAGIC 
-# MAGIC Better way is to define .py file in which you define all your functions. Just like in a normal python project. 
+# MAGIC Better way is to define .py file in which you define all your functions. Just like in a normal python project. This works **only in Databricks Repos** though.
 
 # COMMAND ----------
 
