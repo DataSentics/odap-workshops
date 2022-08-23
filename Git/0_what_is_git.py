@@ -39,7 +39,7 @@
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ![what_is_git](https://github.com/DataSentics/odap-workshops/blob/tbo-git/Git/images/git-branches-merge.png?raw=true)
+# MAGIC ![what_is_git](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-branches-merge.png?raw=true)
 
 # COMMAND ----------
 
@@ -47,13 +47,16 @@
 # MAGIC ### GitHub
 # MAGIC GitHub, Inc., is an Internet hosting service for software development and version control using Git.
 # MAGIC 
-# MAGIC It provides the distributed version control of Git plus access control, bug tracking, software feature requests, task management, continuous integration, and wikis for every project.
+# MAGIC It provides the distributed version control of Git plus access control, bug tracking, software feature requests, task management, continuous integration, and wikis for every project. It is the most popular github provider. It is also the provider that Ceska Sporitelna is using. Alternatives are:
+# MAGIC - Azure DevOps
+# MAGIC - GitLab
+# MAGIC - ...
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ![github_logo]()
-# MAGIC ![github_repo]()
+# MAGIC ![github_logo](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/github_logo.png?raw=true)
+# MAGIC ![repo_image](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/repo_image.png?raw=true)
 
 # COMMAND ----------
 
