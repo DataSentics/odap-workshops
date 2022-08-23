@@ -37,7 +37,3 @@
 # MAGIC 
 # MAGIC ![user_settings_token_1](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/Screen%20Shot%202022-08-19%20at%2010.19.42.png?raw=true)
 # MAGIC ![user_settings_token_2](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/Screen%20Shot%202022-08-19%20at%2010.20.20.png?raw=true)
-
-# COMMAND ----------
-
-

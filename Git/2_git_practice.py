@@ -46,7 +46,7 @@
 
 # MAGIC %md
 # MAGIC ### Git branches
-# MAGIC When working with git you are always developing on a branch. Git branch represents an independent line of development. When working on a new feature or a bug-fix we do not want to keep track of the different changes we are making and we want to keep it separated. Once we are done with our work we want to include these changes into the original repository.  
+# MAGIC When working with git you are always developing on a branch. Git branch represents an independent line of development. When working on a new feature or a bug-fix we want to keep track of the different changes we are making separately. Once we are done with our work we want to include these changes into the original repository. 
 # MAGIC 
 # MAGIC Creating a new branch resembles creating a new package in postal service with already prepared content. 
 # MAGIC 
@@ -91,7 +91,7 @@
 # MAGIC Now it is time to make some changes. This change can resemble creating a new item which you will want to insert into your box. 
 # MAGIC 
 # MAGIC **TODO**
-# MAGIC Create a new text file "your-name.txt" that will contain your favorite qoute. If you do not hahve a favorite qoute you can insert “Programmer: A machine that turns coffee into code."
+# MAGIC Create a new text file "your-name.txt" that will contain your favorite qoute. If you do not have a favorite qoute you can insert “Programmer: A machine that turns coffee into code."
 
 # COMMAND ----------
 
@@ -105,7 +105,7 @@
 
 # MAGIC %md
 # MAGIC ### Git commit
-# MAGIC Once you added your changes with ```git add``` you need to commit them. Commiting resembles packing your box and putting a comment onto it. This comment describes the content of the new box. 
+# MAGIC Once you added your changes with ```git add``` you need to commit them. Commiting resembles packing an item into your box and putting a comment onto it. It is a separate subset of work in given branch. Based on commits Git keeps the history. 
 # MAGIC 
 # MAGIC In CLI you can do ```git commit -m "Message describing the commit"```
 
@@ -143,8 +143,7 @@
 # MAGIC 4. Select from which branch the new pull request will be created
 # MAGIC 5. Click create-pull-request
 # MAGIC ![create-pr1](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/git-create-pr-2.png?raw=true)
-# MAGIC 
-# MAGIC Once a pull-request has been created you need to ask someone to review your changes. To do so you can just send him the link to your pull-request. During the review for the person 
+# MAGIC 6. Once a pull-request has been created you need to ask someone to review your changes. To do so you can just send him the link to your pull-request. He can either request changes(add comments) to your pull-request or approve them.
 
 # COMMAND ----------
 
