@@ -45,3 +45,13 @@
 # MAGIC Silver = **parsed, cleansed, SDM (Smart Data Model**
 # MAGIC 
 # MAGIC Gold = **aggregated features, Feature store**
+
+# COMMAND ----------
+
+# MAGIC %md 
+# MAGIC ## Databricks architecture(Control plane vs Data plane)
+# MAGIC ![github-clone-repo](https://github.com/DataSentics/odap-workshops/blob/main/DE/images/databricks_architecture.png?raw=true)
+
+# COMMAND ----------
+
+
