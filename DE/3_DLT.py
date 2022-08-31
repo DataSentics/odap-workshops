@@ -42,15 +42,15 @@ json_path = "/databricks-datasets/wikipedia-datasets/data-001/clickstream/raw-un
   comment="The raw wikipedia clickstream dataset, ingested from /databricks-datasets."
 )
 def clickstream_raw():
-  return (spark.read.format("json").load(json_path))
+  return (spark.read.option('header', True).csv('dbfs:/FileStore/export_dlt.csv'))
 
 # COMMAND ----------
 
 @dlt.table(
   comment="Wikipedia clickstream data cleaned and prepared for analysis."
 )
-@dlt.expect("valid_current_page_title", "current_page_title IS NOT NULL")
-@dlt.expect_or_fail("valid_count", "click_count > 0")
+#@dlt.expect("valid_current_page_title", "current_page_title IS NOT NULL")
+#@dlt.expect_or_fail("valid_count", "click_count > 0")
 def clickstream_prepared():
   return (
     dlt.read("clickstream_raw")
