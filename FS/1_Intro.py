@@ -47,6 +47,8 @@
 # MAGIC ### What is a Feature store?
 # MAGIC > A feature store is a centralized repository that enables data scientists to find and share features and also ensures that the same code used to compute the feature values is used for model training and inference.
 # MAGIC 
+# MAGIC It's a big **historized** table for a specific entity (e.g. client) where rows are [ID, Timestamp] and columns are **features**.
+# MAGIC 
 # MAGIC #### Use cases
 # MAGIC - Data democratization - What features are used where, Documentation, Single source of truth
 # MAGIC - Publishing features inside of an organization (API)
@@ -62,12 +64,13 @@
 # MAGIC 
 # MAGIC | ODAP Feature store | Databricks Feature store |
 # MAGIC |----|----|
-# MAGIC | Simple, well defined interface for writing features | General interface for writing features |
-# MAGIC | Optimized for reading performance | User is responsible for optimization |
-# MAGIC | Optimized for writing multiple features at once | User is responsible for optimization |
-# MAGIC | Optimized for writing features with time windows | User is responsible for optimization |
-# MAGIC | Special interface for generating target based training sets | User is responsible for generating targets |
-# MAGIC | Fully customizible per feature metadata | Only models/features/notebook links as metadata |
+# MAGIC | **Simple, well defined interface** for writing features | **General interface** for saving DataFrames |
+# MAGIC | **Optimized** for reading performance | User is responsible for optimization |
+# MAGIC | **Optimized** for writing multiple features at once | User is responsible for optimization |
+# MAGIC | **Optimized** for writing features with time windows | User is responsible for optimization |
+# MAGIC | Special interface for generating **target based** training sets | User is responsible for generating targets |
+# MAGIC | Fully customizable per feature **metadata** | Only models/features/notebook links as metadata |
+# MAGIC | **Outsources** online serving to Databricks FS | Handles online serving **out of the box** |
 
 # COMMAND ----------
 
@@ -80,5 +83,5 @@
 # MAGIC 2) Decorated functions code is **self-documenting**
 # MAGIC 3) **YAML** configuration files
 # MAGIC 4) Production ready **dependency management** allowing for reproducible runs on any environment
-# MAGIC 5) Standardized logging
+# MAGIC 5) Standardized **logging**
 # MAGIC 6) Decorated functions allow for simple and readable **Unit testing**
