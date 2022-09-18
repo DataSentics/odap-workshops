@@ -29,7 +29,7 @@
 # MAGIC 3. Click Https
 # MAGIC 4. Copy the URL
 # MAGIC ![github-clone-repo](https://github.com/DataSentics/odap-workshops/blob/main/Git/images/clone-repo.png?raw=true)
-# MAGIC 5. Go to back to Databricks
+# MAGIC 5. Go back to Databricks
 # MAGIC 6. Click Repos
 # MAGIC 7. Click Add Repo
 # MAGIC 8. Enter the URL
