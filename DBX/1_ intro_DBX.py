@@ -14,7 +14,7 @@
 
 # MAGIC %md
 # MAGIC ## SQL
-# MAGIC * [Ducumentation](https://www.databricks.com/product/databricks-sql)
+# MAGIC * [Documentation](https://www.databricks.com/product/databricks-sql)
 # MAGIC 
 # MAGIC SQL workspace provides a native SQL interface and query editor, integrates well with existing BI tools, supports the querying of data in Delta Lake using SQL queries, and offers the ability to create and share visualizations. With SQL Analytics, administrators can granularly access and gain insights into how data in being accessed within the Lakehouse through usage and phases of the query's execution process. With its tightly coupled Integration with Delta Lake, SQL Analytics offers reliable governance of data for audit and compliance needs. Users will have the ability to easily create visualizations in the form of dashboards, and will not have to worry about creating and managing complex Apache Spark based compute clusters with SQL serverless endpoints.
 
@@ -235,6 +235,7 @@ username = username.split("@")[0]
 username = username.replace('.', '_')
 print("Username:", username)
 database_name = username + "_db"
+
 print("DB name:", database_name)
 
 dbutils.widgets.dropdown("table", "iris_table", [database[0] for database in spark.catalog.listTables(database_name)])
@@ -303,61 +304,6 @@ dbutils.notebook.run("./test-notebook", 0)
 # MAGIC The component that stores all the structure information of the various tables and partitions in the data warehouse including column and column type information, the serializers and deserializers necessary to read and write data, and the corresponding files where the data is stored.
 # MAGIC 
 # MAGIC ![Metastore](https://github.com/DataSentics/odap-workshops/blob/main/DBX/images/metastore.png?raw=true)
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC 
-# MAGIC ## Delta format
-# MAGIC 
-# MAGIC - time travel/historization
-# MAGIC - schema evolution
-# MAGIC - caching
-# MAGIC - MERGE operation
-# MAGIC 
-# MAGIC [Introduction](https://docs.microsoft.com/en-us/azure/databricks/delta/delta-intro)
-
-# COMMAND ----------
-
-# DBTITLE 1,Delta Table
-df = spark.read.option("header", "true").csv('file:/dbfs/FileStore/python-workshop/tips.csv')
-
-print("Table from csv:")
-display(df)
-
-(
-  df.write
-    .mode("overwrite")
-    .partitionBy("day")
-    .format("delta")
-    .option("path", "/FileStore/dbx-workshop/tips")
-    .saveAsTable("tips_from_delta")
-)
-# save as table
-
-df_read =(
-    spark
-      .read
-      .format("delta")
-      .load("/FileStore/dbx-workshop/tips")
-)
-
-print("Table from delta:")
-display(df_read)
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC -- now we can query the delta table as SQL table
-# MAGIC SELECT *
-# MAGIC FROM tips_from_delta;
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC -- now we can query the delta from a path
-# MAGIC SELECT *
-# MAGIC FROM delta.`/FileStore/dbx-workshop/tips`;
 
 # COMMAND ----------
 
