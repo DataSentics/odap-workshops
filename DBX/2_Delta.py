@@ -12,7 +12,7 @@
 # MAGIC - caching
 # MAGIC - MERGE operation
 # MAGIC 
-# MAGIC [Introduction](https://docs.microsoft.com/en-us/azure/databricks/delta/delta-intro)
+# MAGIC [Introduction](https://docs.delta.io/latest/delta-intro.html)
 
 # COMMAND ----------
 
@@ -75,13 +75,13 @@ dbutils.fs.ls(f"dbfs:/user/hive/warehouse/{username}.db/tips")
 
 # COMMAND ----------
 
-dbutils.fs.ls(f"dbfs:/user/hive/warehouse/{username}.db/tips_from_delta/_delta_log")
+dbutils.fs.ls(f"dbfs:/user/hive/warehouse/{username}.db/tips/_delta_log")
 
 # COMMAND ----------
 
 display(
     spark.read.format("json").load(
-        "dbfs:/FileStore/dbx-workshop/tips/_delta_log/00000000000000000000.json"
+        f"dbfs:/user/hive/warehouse/{username}.db/tips/_delta_log/00000000000000000000.json"
     )
 )
 
@@ -89,6 +89,10 @@ display(
 
 # MAGIC %sql
 # MAGIC RESTORE tips TO VERSION AS OF 0
+
+# COMMAND ----------
+
+
 
 # COMMAND ----------
 
