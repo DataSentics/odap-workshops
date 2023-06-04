@@ -10,7 +10,7 @@ catalog_name
 
 # COMMAND ----------
 
-spark.sql(f"CREATE DATABASE IF NOT EXISTS {catalog_name}.kafka_workshop")
+spark.sql(f"CREATE DATABASE IF NOT EXISTS {catalog_name}.streaming_workshop")
 
 # COMMAND ----------
 
@@ -75,13 +75,13 @@ resultDF = (initDF
 
 (
     resultDF.writeStream
-                        .option("checkpointLocation", "/tmp/kafka_workshop/tips/_checkpoints/")
-                        .toTable(f"{catalog_name}.kafka_workshop.tips")
+                        .option("checkpointLocation", "/tmp/streaming_workshop/tips/_checkpoints/")
+                        .toTable(f"{catalog_name}.streaming_workshop.tips")
 )
 
 # COMMAND ----------
 
 user_folder = dbutils.notebook.entry_point.getDbutils().notebook().getContext().userName().get()
 catalog_name = user_folder.split('@')[0].replace("-", "_")
-restaurants =spark.read.format("csv").option("header","true").load(f"file:/Workspace/Repos/{user_folder}/odap-workshops/streaming workshop/data/restaurant_names.csv")
-restaurants.write.mode('overwrite').saveAsTable(f"{catalog_name}.kafka_workshop.restaurants")
+restaurants =spark.read.format("csv").option("header","true").load(f"file:/Workspace/Repos/{user_folder}/odap-workshops/streaming_workshop/data/restaurant_names.csv")
+restaurants.write.mode('overwrite').saveAsTable(f"{catalog_name}.streaming_workshop.restaurants")
