@@ -2,7 +2,7 @@
 # MAGIC %md
 # MAGIC # Spark Structured Streaming Workshop
 # MAGIC
-# MAGIC [Guid in Spark docummentation](https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#triggers)
+# MAGIC [Guide in Spark docummentation](https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#triggers)
 # MAGIC
 # MAGIC Content:
 # MAGIC 1) Stateless operations
@@ -143,7 +143,7 @@ query = restaurant_incomes.writeStream.option(
 # COMMAND ----------
 
 dbutils.fs.ls(
-    f"/tmp/streaming_workshop/{catalog_name}/restaurant_lunch_incomess/_checkpoints"
+    f"/tmp/streaming_workshop/{catalog_name}/restaurant_lunch_incomess/_checkpoints/offsets/"
 )
 
 # COMMAND ----------
@@ -283,11 +283,11 @@ display(incomes)
 # MAGIC
 # MAGIC Example:
 # MAGIC
-# MAGIC ![image](https://raw.githubusercontent.com/DataSentics/odap-workshops/olo-streaming-ws/streaming%20workshop/data/windows.PNG)
+# MAGIC ![image](https://raw.githubusercontent.com/DataSentics/odap-workshops/main/streaming_workshop/data/windows.PNG)
 # MAGIC
 # MAGIC Example with watermarking:
 # MAGIC
-# MAGIC ![image](https://raw.githubusercontent.com/DataSentics/odap-workshops/olo-streaming-ws/streaming%20workshop/data/watermarking.PNG)
+# MAGIC ![image](https://raw.githubusercontent.com/DataSentics/odap-workshops/main/streaming_workshop/data/watermarking.PNG)
 # MAGIC
 # MAGIC window function parameters:
 # MAGIC * timeColumn
@@ -333,9 +333,9 @@ duplicates = (
 
 tips_with_duplicates = tips_stream.unionByName(duplicates)
 
-tips_with_duplicates = tips_with_duplicates.withWatermark(
-    "timestamp", "10 minutes"
-).dropDuplicates()
+# tips_with_duplicates = tips_with_duplicates.withWatermark(
+#    "timestamp", "10 minutes"
+# ).dropDuplicates()
 
 (
     tips_with_duplicates.writeStream.option(
@@ -402,7 +402,7 @@ display(restaurants)
 tips_stream_withWatermark = tips_stream.withWatermark("timestamp", "10 seconds")
 restaurants_withWatermark = restaurants.withWatermark("timestamp", "10 seconds")
 
-tips_count = tips_stream_withWatermark.join(
+tips_count = tips_stream.join(
     restaurants_withWatermark, f.expr("restaurant_id = restaurant")
 )
 display(tips_count)
@@ -419,6 +419,10 @@ display(tips_count)
 print(json.dumps(query.lastProgress, indent=4))
 print("STATUS ################################################")
 print(query.status)
+
+# COMMAND ----------
+
+query.stop()
 
 # COMMAND ----------
 
